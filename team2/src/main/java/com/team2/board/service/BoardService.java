@@ -20,6 +20,7 @@ public class BoardService implements IBoardService {
 
 	@Override
 	public void createBoard(BoardVO board) {
+		System.out.println(board);
 		boardRepository.createBoard(board);
 	}
 
