@@ -28,7 +28,7 @@ public interface IBoardService {
 	void deleteArticle(int boardId, int replyNumber);
 	
 	int selectTotalArticleCount();
-	int selectTotalArticleCountByCategoryId(int categoryId);
+	int selectTotalArticleCountByteamId(int categoryId);
 	
 	List<Board> searchListByContentKeyword(String keyword, int page);
 	int selectTotalArticleCountByKeyword(String keyword);

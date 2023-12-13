@@ -26,7 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.team2.board.model.Board;
-import com.team2.board.model.BoardCategory;
+import com.team2.board.model.BoardTeam;
 import com.team2.board.model.BoardUploadFile;
 import com.team2.board.service.IBoardCategoryService;
 import com.team2.board.service.IBoardService;
@@ -44,15 +44,15 @@ public class BoardController {
 	@Autowired
 	IBoardCategoryService categoryService;
 
-	@GetMapping("/board/cat/{categoryId}/{page}")
-	public String getListByCategory(@PathVariable int categoryId, @PathVariable int page, HttpSession session, Model model) {
+	@GetMapping("/board/cat/{teamId}/{page}")
+	public String getListByCategory(@PathVariable int teamId, @PathVariable int page, HttpSession session, Model model) {
 		session.setAttribute("page", page);
-		model.addAttribute("categoryId", categoryId);
+		model.addAttribute("teamId", teamId);
 
-		List<Board> boardList = boardService.selectArticleListByCategory(categoryId, page);
+		List<Board> boardList = boardService.selectArticleListByCategory(teamId, page);
 		model.addAttribute("boardList", boardList);
 
-		int bbsCount = boardService.selectTotalArticleCountByCategoryId(categoryId);
+		int bbsCount = boardService.selectTotalArticleCountByteamId(teamId);
 		int totalPage = 0;
 		if(bbsCount > 0) {
 			totalPage= (int)Math.ceil(bbsCount/10.0);
@@ -75,9 +75,9 @@ public class BoardController {
 		return "board/list";
 	}
 
-	@GetMapping("/board/cat/{categoryId}")
-	public String getListByCategory(@PathVariable int categoryId, HttpSession session, Model model) {
-		return getListByCategory(categoryId, 1, session, model);
+	@GetMapping("/board/cat/{teamId}")
+	public String getListByCategory(@PathVariable int teamId, HttpSession session, Model model) {
+		return getListByCategory(teamId, 1, session, model);
 	}
 
 	@GetMapping("/board/{boardId}/{page}")
@@ -91,7 +91,7 @@ public class BoardController {
 		}
 		model.addAttribute("board", board);
 		model.addAttribute("page", page);
-		model.addAttribute("categoryId", board.getCategoryId());
+		model.addAttribute("teamId", board.getTeamId());
 		logger.info("getBoardDetails " + board.toString());
 		return "board/view";
 	}
@@ -101,14 +101,14 @@ public class BoardController {
 		return getBoardDetails(boardId, 1, model);
 	}
 
-	@GetMapping(value="/board/write/{categoryId}")
-	public String writeArticle(@PathVariable int categoryId, HttpSession session, Model model) {
+	@GetMapping(value="/board/write/{teamId}")
+	public String writeArticle(@PathVariable int teamId, HttpSession session, Model model) {
 		// CSRF 토큰을 생성하여 세션에 저장
 		String csrfToken = UUID.randomUUID().toString();
         session.setAttribute("csrfToken", csrfToken);
-		List<BoardCategory> categoryList = categoryService.selectAllCategory();
+		List<BoardTeam> categoryList = categoryService.selectAllCategory();
 		model.addAttribute("categoryList", categoryList);
-		model.addAttribute("categoryId", categoryId);
+		model.addAttribute("teamId", teamId);
 		return "board/write";
 	}
 
@@ -139,7 +139,7 @@ public class BoardController {
 			e.printStackTrace();
 			redirectAttrs.addFlashAttribute("message", e.getMessage());
 		}
-		return "redirect:/board/cat/"+board.getCategoryId();
+		return "redirect:/board/cat/"+board.getTeamId();
 	}
 
 	@GetMapping("/file/{fileId}")
@@ -162,8 +162,8 @@ public class BoardController {
 	@GetMapping(value="/board/reply/{boardId}")
 	public String replyArticle(@PathVariable int boardId, Model model) {
 		Board board = boardService.selectArticle(boardId);
-		board.setWriter("");
-		board.setEmail("");
+		board.setMemberId("");
+		//board.setEmail("");
 		board.setTitle("[Re]"+board.getTitle());
 		board.setContent("\n\n\n----------\n" + board.getContent().replaceAll("<br>", "\n"));
 		model.addAttribute("board", board);
@@ -194,18 +194,18 @@ public class BoardController {
 			redirectAttrs.addFlashAttribute("message", e.getMessage());
 		}
 		if(session.getAttribute("page") != null) {
-			return "redirect:/board/cat/"+board.getCategoryId() + "/" + (Integer)session.getAttribute("page");
+			return "redirect:/board/cat/"+board.getTeamId() + "/" + (Integer)session.getAttribute("page");
 		}else {
-			return "redirect:/board/cat/"+board.getCategoryId(); 
+			return "redirect:/board/cat/"+board.getTeamId(); 
 		}
 	}
 
 	@GetMapping(value="/board/update/{boardId}")
 	public String updateArticle(@PathVariable int boardId, Model model) {
-		List<BoardCategory> categoryList = categoryService.selectAllCategory();
+		List<BoardTeam> categoryList = categoryService.selectAllCategory();
 		Board board = boardService.selectArticle(boardId);
 		model.addAttribute("categoryList", categoryList);
-		model.addAttribute("categoryId", board.getCategoryId());
+		model.addAttribute("teamId", board.getTeamId());
 		board.setContent(board.getContent().replaceAll("<br>", "\r\n"));
 		model.addAttribute("board", board);
 		return "board/update";
@@ -247,7 +247,7 @@ public class BoardController {
 	@GetMapping(value="/board/delete/{boardId}")
 	public String deleteArticle(@PathVariable int boardId, Model model) {
 		Board board = boardService.selectDeleteArticle(boardId);
-		model.addAttribute("categoryId", board.getCategoryId());
+		model.addAttribute("teamId", board.getTeamId());
 		model.addAttribute("boardId", boardId);
 		model.addAttribute("replyNumber", board.getReplyNumber());
 		return "board/delete";
@@ -259,7 +259,7 @@ public class BoardController {
 			String dbpw = boardService.getPassword(board.getBoardId());
 			if(dbpw.equals(board.getPassword())) {
 				boardService.deleteArticle(board.getBoardId(), board.getReplyNumber());
-				return "redirect:/board/cat/" + board.getCategoryId() + "/" + (Integer)session.getAttribute("page");
+				return "redirect:/board/cat/" + board.getTeamId() + "/" + (Integer)session.getAttribute("page");
 			}else {
 				model.addFlashAttribute("message", "WRONG_PASSWORD_NOT_DELETED");
 				return "redirect:/board/delete/" + board.getBoardId();
