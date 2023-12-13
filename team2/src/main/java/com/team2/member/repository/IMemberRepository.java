@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import com.team2.member.model.Member;
 
-
 @Repository
 @Mapper
 public interface IMemberRepository {
