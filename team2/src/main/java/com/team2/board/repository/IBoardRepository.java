@@ -8,41 +8,20 @@ import org.springframework.stereotype.Repository;
 
 import com.team2.board.model.Board;
 import com.team2.board.model.BoardUploadFile;
+import com.team2.board.model.BoardVO;
+import com.team2.board.model.ReplyVO;
 
 
 @Repository
 @Mapper
 public interface IBoardRepository {
-	int selectMaxArticleNo();
-	int selectMaxFileId();
 	
-	void insertArticle(Board board);
-	void insertFileData(BoardUploadFile file);
+	public BoardVO createBoard(BoardVO board);
+	public BoardVO updateBoard(BoardVO board);
+	public String deleteBoard(String boardId);
 	
-	List<Board> selectArticleListByCategory(@Param("categoryId") int categoryId, @Param("start") int start, @Param("end") int end);
+	public ReplyVO createReply(ReplyVO reply);
+	public ReplyVO updateReply(ReplyVO reply);
+	public String deleteReply(String replyId);
 	
-	Board selectArticle(int boardId);
-	BoardUploadFile getFile(int fileId);
-		
-	void updateReadCount(int boardId);
-
-	void updateReplyNumber(@Param("masterId") int masterId, @Param("replyNumber") int replyNumber);
-	void replyArticle(Board boardId);
-	
-	String getPassword(int boardId);
-	
-	void updateArticle(Board board);
-	void updateFileData(BoardUploadFile file);
-	
-	void deleteFileData(int boardId);
-	void deleteReplyFileData(int boardId);
-	Board selectDeleteArticle(int boardId);
-	void deleteArticleByBoardId(int boardId);
-	void deleteArticleByMasterId(int boardId);
-	
-	int selectTotalArticleCount();
-	int selectTotalArticleCountByCategoryId(int categoryId);
-
-	int selectTotalArticleCountByKeyword(String keyword);
-	List<Board> searchListByContentKeyword(@Param("keyword") String keyword, @Param("start") int start, @Param("end") int end);
 }

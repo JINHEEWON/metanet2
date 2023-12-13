@@ -4,32 +4,16 @@ import java.util.List;
 
 import com.team2.board.model.Board;
 import com.team2.board.model.BoardUploadFile;
+import com.team2.board.model.BoardVO;
+import com.team2.board.model.ReplyVO;
 
 
 public interface IBoardService {
-	void insertArticle(Board boardId);
-	void insertArticle(Board boardId, BoardUploadFile file);
+	public BoardVO createBoard(BoardVO board);
+	public BoardVO updateBoard(BoardVO board);
+	public String deleteBoard(String boardId);
 	
-	List<Board> selectArticleListByCategory(int categoryId, int page);
-	
-	Board selectArticle(int boardId);
-	
-	BoardUploadFile getFile(int fileId);
-	
-	void replyArticle(Board board);
-	void replyArticle(Board board, BoardUploadFile file);
-
-	String getPassword(int boardId);
-	
-	void updateArticle(Board board);
-	void updateArticle(Board board, BoardUploadFile file);
-	
-	Board selectDeleteArticle(int boardId);
-	void deleteArticle(int boardId, int replyNumber);
-	
-	int selectTotalArticleCount();
-	int selectTotalArticleCountByCategoryId(int categoryId);
-	
-	List<Board> searchListByContentKeyword(String keyword, int page);
-	int selectTotalArticleCountByKeyword(String keyword);
+	public ReplyVO createReply(ReplyVO reply);
+	public ReplyVO updateReply(ReplyVO reply);
+	public String deleteReply(String replyId);
 }
