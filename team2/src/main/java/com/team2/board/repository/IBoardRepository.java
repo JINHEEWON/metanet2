@@ -16,12 +16,11 @@ import com.team2.board.model.ReplyVO;
 @Mapper
 public interface IBoardRepository {
 	
-	public BoardVO createBoard(BoardVO board);
-	public BoardVO updateBoard(BoardVO board);
-	public String deleteBoard(String boardId);
+	public void createBoard(BoardVO board);
+	public void updateBoard(BoardVO board);
+	public void deleteBoard(@Param("boardId") int boardId);
 	
-	public ReplyVO createReply(ReplyVO reply);
-	public ReplyVO updateReply(ReplyVO reply);
-	public String deleteReply(String replyId);
-	
+	public void createReply(ReplyVO reply);
+	public void updateReply(ReplyVO reply);
+	public void deleteReply(@Param("replyId") int replyId);
 }

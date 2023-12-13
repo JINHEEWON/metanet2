@@ -19,33 +19,33 @@ public class BoardService implements IBoardService {
 	IBoardRepository boardRepository;
 
 	@Override
-	public BoardVO createBoard(BoardVO board) {
-		return boardRepository.createBoard(board);
+	public void createBoard(BoardVO board) {
+		boardRepository.createBoard(board);
 	}
 
 	@Override
-	public BoardVO updateBoard(BoardVO board) {
-		return boardRepository.updateBoard(board);
+	public void updateBoard(BoardVO board) {
+		boardRepository.updateBoard(board);
 	}
 
 	@Override
-	public String deleteBoard(String boardId) {
-		return boardRepository.deleteBoard(boardId);
+	public void deleteBoard(int boardId) {
+		boardRepository.deleteBoard(boardId);
 	}
 
 	@Override
-	public ReplyVO createReply(ReplyVO reply) {
-		return boardRepository.createReply(reply);
+	public void createReply(ReplyVO reply) {
+		boardRepository.createReply(reply);
 	}
 
 	@Override
-	public ReplyVO updateReply(ReplyVO reply) {
-		return boardRepository.updateReply(reply);
+	public void updateReply(ReplyVO reply) {
+		boardRepository.updateReply(reply);
 	}
 
 	@Override
-	public String deleteReply(String replyId) {
-		return boardRepository.deleteBoard(replyId);
+	public void deleteReply(int replyId) {
+		boardRepository.deleteBoard(replyId);
 	}
 
 }
