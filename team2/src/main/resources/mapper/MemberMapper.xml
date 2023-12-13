@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.team2.member.repository.IMemberRepository">
+
+<select id="selectMember" parameterType="string">
+<![CDATA[
+      SELECT 
+         member_id,
+         name,
+         password,
+         email,
+         phone,
+         birth,
+         team 
+      FROM 
+         member 
+      WHERE member_id=#{memberId}
+   ]]>
+   </select>
+
+
+<insert id="insertMember" parameterType="com.team2.Member.model.Member">
+   <![CDATA[
+      INSERT INTO 
+         member (member_id, name, password, email, phone, birth, team) 
+      VALUES 
+         (#{memberId}, #{name}, #{password}, #{email}, #{phone}, #{birth}, #{team})
+   ]]>
+   </insert>
+
+
+<update id="updateMember" parameterType="com.team2.Member.model.Member">
+   <![CDATA[
+      UPDATE MEMBER
+      SET 
+         name=#{name}, password=#{password}, email=#{email}, phone=#{phone}, birth=#{birth}, team=#{team}
+      WHERE 
+         member_id=#{memberId}
+   ]]>
+   </update>
+
+<delete id="deleteMember" parameterType="com.team2.Member.model.Member">
+   <![CDATA[
+      DELETE FROM
+         member 
+      WHERE
+         member_id=#{memberId} AND password=#{password}
+   ]]>
+   </delete>
+
+
+
+<select id="getId">
+<![CDATA[
+      SELECT 
+         member_id,   
+      FROM 
+         member 
+      WHERE email=#{email} AND phone=#{phone}
+   ]]>
+   </select>
+
+<select id="getPassword">
+<![CDATA[
+      SELECT 
+         password   
+      FROM 
+         member 
+      WHERE member_id=#{memberId} AND email=#{email} AND phone=#{phone}
+   ]]>
+   </select>
+
+<update id="updatePassword">
+   <![CDATA[
+      UPDATE MEMBER
+      SET 
+         password=#{password} 
+      WHERE 
+         member_id=#{memberId} AND email=#{email} AND phone=#{phone}
+   ]]>
+   </update>
