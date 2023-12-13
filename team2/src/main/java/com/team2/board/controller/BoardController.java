@@ -9,6 +9,6 @@ public class BoardController {
 
    @GetMapping("/")
    public @ResponseBody String index() {
-      return "하이엉히";
+      return "하이엉히"; 
    }
 }
