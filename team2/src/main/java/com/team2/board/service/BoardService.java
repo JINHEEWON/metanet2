@@ -43,7 +43,7 @@ public class BoardService implements IBoardService {
 
 	@Override
 	public void deleteReply(int replyId) {
-		boardRepository.deleteBoard(replyId);
+		boardRepository.deleteReply(replyId);
 	}
 
 }
