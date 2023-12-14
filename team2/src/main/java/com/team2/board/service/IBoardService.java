@@ -1,5 +1,6 @@
 package com.team2.board.service;
 
+import com.team2.board.model.BoardUploadFile;
 import com.team2.board.model.BoardVO;
 import com.team2.board.model.ReplyVO;
 
@@ -13,4 +14,6 @@ public interface IBoardService {
 	public void updateReply(ReplyVO reply);
 	public void deleteReply(int replyId);
 	public int maxBoardId();
+	
+	
 }

@@ -3,7 +3,9 @@ package com.team2.board.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.team2.board.model.BoardUploadFile;
 import com.team2.board.model.BoardVO;
 import com.team2.board.model.ReplyVO;
 import com.team2.board.repository.IBoardRepository;
@@ -64,6 +66,6 @@ public class BoardService implements IBoardService {
 	public int maxBoardId() {
 		return boardRepository.maxBoardId();
 	}
-	
+
 
 }
