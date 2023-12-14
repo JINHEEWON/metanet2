@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.team2.member.model.Member;
 import com.team2.member.model.MemberDelete;
 import com.team2.member.model.MemberFindInfo;
+import com.team2.member.model.Email;
+import com.team2.member.model.MemberId;
 import com.team2.member.repository.IMemberRepository;
 
 @Service
@@ -67,5 +69,15 @@ public class MemberService implements IMemberService {
         memberDao.getPassword(memberFindInfo);
         return password.toString();
     }
+
+	@Override
+	public boolean checkEmail(Email email) {
+		return memberDao.checkEmail(email);		
+	}
+
+	@Override
+	public boolean checkMemberId(MemberId memberId) {
+		return memberDao.checkMemberId(memberId);
+	}
 }
 

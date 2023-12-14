@@ -34,7 +34,7 @@
    <![CDATA[
       UPDATE MEMBER
       SET 
-         name=#{name}, password=#{password}, email=#{email}, phone=#{phone}, birth=#{birth}, team=#{team_id}
+         name=#{name}, password=#{password}, email=#{email}, phone=#{phone}, birth=#{birth}, team_id=#{teamId}
       WHERE 
          member_id=#{memberId}
    ]]>
@@ -80,5 +80,27 @@
          member_id=#{memberId} AND email=#{email} AND phone=#{phone}
    ]]>
    </update>
+   
+   
+ <!-- 1이면 true 0이면 false -->
+<select id="checkEmail" parameterType="string" resultType="boolean">
+    <![CDATA[
+        SELECT 
+            COUNT(*)   
+        FROM 
+            member 
+        WHERE email=#{email}  
+    ]]>
+</select>
+
+<select id="checkMemberId" parameterType="map" resultType="boolean">
+    <![CDATA[
+        SELECT 
+            COUNT(*)   
+        FROM 
+            member 
+        WHERE member_id=#{memberId}
+    ]]>
+</select>
  
  </mapper>

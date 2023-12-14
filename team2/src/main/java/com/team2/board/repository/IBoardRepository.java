@@ -1,48 +1,33 @@
-//package com.team2.board.repository;
-//
-//import java.util.List;
-//
-//import org.apache.ibatis.annotations.Mapper;
-//import org.apache.ibatis.annotations.Param;
-//import org.springframework.stereotype.Repository;
-//
-//import com.team2.board.model.Board;
-//import com.team2.board.model.BoardUploadFile;
-//
-//
-//@Repository
-//@Mapper
-//public interface IBoardRepository {
-//	int selectMaxArticleNo();
-//	int selectMaxFileId();
-//	
-//	void insertArticle(Board board);
-//	void insertFileData(BoardUploadFile file);
-//	
-//	List<Board> selectArticleListByCategory(@Param("categoryId") int categoryId, @Param("start") int start, @Param("end") int end);
-//	
-//	Board selectArticle(int boardId);
-//	BoardUploadFile getFile(int fileId);
-//		
-//	void updateReadCount(int boardId);
-//
-//	void updateReplyNumber(@Param("masterId") int masterId, @Param("replyNumber") int replyNumber);
-//	void replyArticle(Board boardId);
-//	
-//	String getPassword(int boardId);
-//	
-//	void updateArticle(Board board);
-//	void updateFileData(BoardUploadFile file);
-//	
-//	void deleteFileData(int boardId);
-//	void deleteReplyFileData(int boardId);
-//	Board selectDeleteArticle(int boardId);
-//	void deleteArticleByBoardId(int boardId);
-//	void deleteArticleByMasterId(int boardId);
-//	
-//	int selectTotalArticleCount();
-//	int selectTotalArticleCountByCategoryId(int categoryId);
-//
-//	int selectTotalArticleCountByKeyword(String keyword);
-//	List<Board> searchListByContentKeyword(@Param("keyword") String keyword, @Param("start") int start, @Param("end") int end);
-//}
+package com.team2.board.repository;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
+
+import com.team2.board.model.BoardVO;
+import com.team2.board.model.ReplyVO;
+
+
+@Repository
+@Mapper
+public interface IBoardRepository {
+	
+	public void createBoard(BoardVO board);
+	public void updateBoard(BoardVO board);
+	public void deleteBoard(@Param("boardId") int boardId);
+	
+	public void createReply(ReplyVO reply);
+	public void updateReply(ReplyVO reply);
+	public void deleteReply(@Param("replyId") int replyId);
+	
+	public List<BoardVO> getBoardList(
+		@Param("teamId") int teamId,
+		@Param("start") int start,
+		@Param("end") int end,
+		@Param("order_by") String order_by
+	); 
+	public int maxBoardId();
+	public int maxReplyId();
+}
