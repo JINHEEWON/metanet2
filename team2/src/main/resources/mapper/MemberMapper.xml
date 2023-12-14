@@ -21,7 +21,7 @@
    </select>
 
 
-<insert id="insertMember" parameterType="com.team2.Member.model.Member">
+<insert id="insertMember" parameterType="com.team2.member.model.Member">
    <![CDATA[
       INSERT INTO 
          member (member_id, name, password, email, phone, birth, team) 
@@ -31,7 +31,7 @@
    </insert>
 
 
-<update id="updateMember" parameterType="com.team2.Member.model.Member">
+<update id="updateMember" parameterType="com.team2.member.model.Member">
    <![CDATA[
       UPDATE MEMBER
       SET 
@@ -41,7 +41,7 @@
    ]]>
    </update>
 
-<delete id="deleteMember" parameterType="com.team2.Member.model.Member">
+<delete id="deleteMember" parameterType="com.team2.member.model.Member">
    <![CDATA[
       DELETE FROM
          member 
@@ -81,3 +81,5 @@
          member_id=#{memberId} AND email=#{email} AND phone=#{phone}
    ]]>
    </update>
+ 
+ </mapper>
