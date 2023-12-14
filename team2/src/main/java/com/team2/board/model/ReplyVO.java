@@ -14,5 +14,5 @@ public class ReplyVO {
 	String content;
 	Date writeDate;
 	int boardId;
-	int memberId;
+	String memberId;
 }

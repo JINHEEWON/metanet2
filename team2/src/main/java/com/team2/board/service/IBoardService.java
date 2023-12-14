@@ -3,7 +3,6 @@ package com.team2.board.service;
 import java.util.List;
 
 import com.team2.board.model.Board;
-import com.team2.board.model.BoardUploadFile;
 import com.team2.board.model.BoardVO;
 import com.team2.board.model.ReplyVO;
 

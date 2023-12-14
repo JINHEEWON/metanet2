@@ -6,8 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import com.team2.board.model.Board;
-import com.team2.board.model.BoardUploadFile;
 import com.team2.board.model.BoardVO;
 import com.team2.board.model.ReplyVO;
 

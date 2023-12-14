@@ -4,10 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.team2.board.model.Board;
-import com.team2.board.model.BoardUploadFile;
 import com.team2.board.model.BoardVO;
 import com.team2.board.model.ReplyVO;
 import com.team2.board.repository.IBoardRepository;

@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 
-@Controller
+@RestController
 @RequestMapping("/b")
 public class BoardController {
 
@@ -22,16 +23,16 @@ public class BoardController {
 	IBoardService boardService;
 	
 	@PostMapping(value="/create") 
-	public @ResponseBody String testing(@RequestBody BoardVO board) {
+	public BoardVO testing(@RequestBody BoardVO board) {
 		System.out.println(board);
 		boardService.createBoard(board);
-		return "test";
+		return board;
 	}
 
 	@PostMapping(value="/createReply") 
-	public @ResponseBody String test2(@RequestBody ReplyVO reply) {
+	public ReplyVO test2(@RequestBody ReplyVO reply) {
 		boardService.createReply(reply);
-		return "test";
+		return reply;
 	}
 
 }

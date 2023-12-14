@@ -29,11 +29,12 @@
 	</delete>
 	
 	<insert id="createReply" parameterType="com.team2.board.model.ReplyVO">
-		INSERT INTO REPLY 
+		<![CDATA[ INSERT INTO REPLY 
 			(REPLY_ID, CONTENT, WRITE_DATE, BOARD_ID, MEMBER_ID) 
 		VALUES 
 			(#{replyId}, #{content}, #{writeDate},
 			#{boardId}, #{memberId})
+		]]>
 	</insert>
 	
 	<update id="updateReply" parameterType="com.team2.board.model.ReplyVO">
