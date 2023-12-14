@@ -24,9 +24,9 @@
 <insert id="insertMember" parameterType="com.team2.member.model.Member">
    <![CDATA[
       INSERT INTO 
-         member (member_id, name, password, email, phone, birth, team) 
+         member (member_id, name, password, email, phone, birth, team_id) 
       VALUES 
-         (#{memberId}, #{name}, #{password}, #{email}, #{phone}, #{birth}, #{team})
+         (#{memberId}, #{name}, #{password}, #{email}, #{phone}, #{birth}, #{teamId})
    ]]>
    </insert>
 
@@ -84,7 +84,7 @@
    
    
  <!-- 1이면 true 0이면 false -->
-<select id="checkEmail" parameterType="string" resultType="boolean">
+<select id="checkEmail" parameterType="com.team2.member.model.Member" resultType="boolean">
     <![CDATA[
         SELECT 
             COUNT(*)   
@@ -94,7 +94,7 @@
     ]]>
 </select>
 
-<select id="checkMemberId" parameterType="map" resultType="boolean">
+<select id="checkMemberId" parameterType="com.team2.member.model.Member" resultType="boolean">
     <![CDATA[
         SELECT 
             COUNT(*)   

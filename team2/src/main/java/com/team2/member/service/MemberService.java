@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.team2.member.model.Member;
-import com.team2.member.model.Email;
-import com.team2.member.model.MemberId;
 import com.team2.member.repository.IMemberRepository;
 
 @Service
@@ -49,12 +47,12 @@ public class MemberService implements IMemberService {
     }
 
 	@Override
-	public boolean checkEmail(Email email) {
-		return memberDao.checkEmail(email);		
+	public boolean checkEmail(String email) {
+		return memberDao.checkEmail(email);
 	}
 
 	@Override
-	public boolean checkMemberId(MemberId memberId) {
+	public boolean checkMemberId(String memberId) {
 		return memberDao.checkMemberId(memberId);
 	}
 }
