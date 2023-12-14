@@ -61,9 +61,7 @@ public class BoardController {
 
 	@PutMapping("/update/{boardId}")
 	public BoardVO putMethodName(@PathVariable int boardId, @RequestBody BoardVO board) {
-
 		boardService.updateBoard(board);
-		
 		return board;
 	}
 	
