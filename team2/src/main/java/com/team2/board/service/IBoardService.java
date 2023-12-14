@@ -10,7 +10,7 @@ import com.team2.board.model.ReplyVO;
 
 
 public interface IBoardService {
-	public void createBoard(BoardVO board);
+	public void createBoard(BoardVO board, int maxId);
 	public void updateBoard(BoardVO board);
 	public void deleteBoard(int boardId);
 	
@@ -24,4 +24,5 @@ public interface IBoardService {
 		int per_page,
 		String order_by
 	); 
+	public int maxBoardId();
 }

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class HomeController {
 
-	@GetMapping("/rrr/eee")
+	@GetMapping("/")
 	public @ResponseBody String home(Model model) {
 		model.addAttribute("message", "Welcome");
 		return "home";

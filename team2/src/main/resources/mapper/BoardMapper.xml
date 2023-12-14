@@ -88,5 +88,9 @@
 		FROM PAGINATED_BOARD
 		WHERE RN BETWEEN #{start} AND #{end}
 	</select>
+	<select id="maxBoardId" resultType="int"> 
+		SELECT MAX(BOARD_ID) FROM BOARD
+	</select>
+	
 	 
 </mapper>
