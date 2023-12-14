@@ -1,5 +1,7 @@
 package com.team2.board.repository;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -20,6 +22,12 @@ public interface IBoardRepository {
 	public void updateReply(ReplyVO reply);
 	public void deleteReply(@Param("replyId") int replyId);
 	
+	public List<BoardVO> getBoardList(
+		@Param("teamId") int teamId,
+		@Param("start") int start,
+		@Param("end") int end,
+		@Param("order_by") String order_by
+	); 
 	public int maxBoardId();
-	
+	public int maxReplyId();
 }

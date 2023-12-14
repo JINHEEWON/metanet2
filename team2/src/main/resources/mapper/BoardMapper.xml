@@ -50,9 +50,49 @@
 		WHERE REPLY_ID=#{replyId}
 	</delete>
 	
+	<resultMap id="boardResultMap" type="com.team2.board.model.BoardVO">
+    	<id column="BOARD_ID" property="boardId"/>
+    	<result column="TEAM_ID" property="teamId"/>
+    	<result column="TITLE" property="title"/>
+    	<result column="CONTENT" property="content"/>
+    	<result column="WRITE_DATE" property="writeDate"/>
+    	<result column="UPDATE_DATE" property="updateDate"/>
+    	<result column="READ_NUM" property="readNum"/>
+    	<result column="MEMBER_ID" property="memberId"/>
+  	</resultMap>
+
+	<select id="getBoardList" resultMap="boardResultMap">
+		WITH PAGINATED_BOARD AS (
+		  SELECT 
+		    BOARD_ID, 
+		    TEAM_ID, 
+		    TITLE, 
+		    CONTENT, 
+		    WRITE_DATE, 
+		    UPDATE_DATE, 
+		    READ_NUM, 
+		    MEMBER_ID,
+		    ROW_NUMBER() OVER (ORDER BY BOARD_ID DESC) AS RN
+		  FROM BOARD
+		  where <if test="teamId != -1"> TEAM_ID=#{teamId} </if>
+		)
+		SELECT 
+		  BOARD_ID, 
+		  TEAM_ID, 
+		  TITLE, 
+		  CONTENT, 
+		  WRITE_DATE, 
+		  UPDATE_DATE, 
+		  READ_NUM, 
+		  MEMBER_ID
+		FROM PAGINATED_BOARD
+		WHERE RN BETWEEN #{start} AND #{end}
+	</select>
 	<select id="maxBoardId" resultType="int"> 
 		SELECT MAX(BOARD_ID) FROM BOARD
 	</select>
-	
+	<select id="maxReplyId" resultType="int"> 
+		SELECT MAX(Reply_ID) FROM REPLY
+	</select>
 	 
 </mapper>
