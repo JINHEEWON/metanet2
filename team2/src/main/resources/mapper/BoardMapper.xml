@@ -49,5 +49,10 @@
 		DELETE REPLY
 		WHERE REPLY_ID=#{replyId}
 	</delete>
+	
+	<select id="maxBoardId" resultType="int"> 
+		SELECT MAX(BOARD_ID) FROM BOARD
+	</select>
+	
 	 
 </mapper>

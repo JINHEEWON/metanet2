@@ -27,7 +27,7 @@ public class BoardController {
 	@PostMapping(value="/create") 
 	public BoardVO testing(@RequestBody BoardVO board) {
 		System.out.println(board);
-		boardService.createBoard(board);
+		boardService.createBoard(board,boardService.maxBoardId());
 		return board;
 	}
 
