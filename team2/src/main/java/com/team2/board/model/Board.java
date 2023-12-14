@@ -12,13 +12,17 @@ import lombok.ToString;
 @ToString(exclude="file")
 public class Board {
 	private int boardId;
-	private int teamId;
+	private int categoryId;
+	private String writer;
+	private String email;
+	private String password;
 	private String title;
 	private String content;
-	private Timestamp wirteDate;
-	private Timestamp updateDate;
-	private int readNum;
-	private String memberId;
+	private Timestamp writeDate;
+	private int masterId;
+	private int readCount;
+	private int replyNumber;
+	private int replyStep;
 	private int page;
 
 	private MultipartFile file;
