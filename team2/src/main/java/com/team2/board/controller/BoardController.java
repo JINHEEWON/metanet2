@@ -74,7 +74,7 @@ public class BoardController {
 	}
 	
 	@PutMapping("/updateReply/{replyId}")
-	public ReplyVO updateReply(@PathVariable int boardId, @RequestBody ReplyVO reply) {
+	public ReplyVO updateReply(@PathVariable int replyId, @RequestBody ReplyVO reply) {
 		boardService.updateReply(reply);
 		return reply;
 	}
