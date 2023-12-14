@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 @RestController
@@ -54,7 +56,6 @@ public class BoardController {
 	
 	@DeleteMapping("/deleteReply/{replyId}")
 	public String deleteReply(@PathVariable int replyId) {
-		System.out.println(replyId);
 		try {
 			boardService.deleteReply(replyId);
 		} catch (Exception e) {
@@ -64,4 +65,17 @@ public class BoardController {
 		return "success";
 	}
 
+	@PutMapping("/update/{boardId}")
+	public BoardVO putMethodName(@PathVariable int boardId, @RequestBody BoardVO board) {
+
+		boardService.updateBoard(board);
+		
+		return board;
+	}
+	
+	@PutMapping("/updateReply/{replyId}")
+	public ReplyVO updateReply(@PathVariable int boardId, @RequestBody ReplyVO reply) {
+		boardService.updateReply(reply);
+		return reply;
+	}
 }
