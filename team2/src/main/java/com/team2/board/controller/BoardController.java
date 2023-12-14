@@ -124,7 +124,6 @@ public class BoardController {
         List<BoardVO> boards = new ArrayList<>();
         int start = page * perPage;
         int end = page * perPage + perPage;
-        System.out.println("teamID: " + teamId + "page: " + page + "per_page: " + perPage + "order_by: " + orderBy);
         try {
             boards = boardService.getBoardList(teamId, start, end, orderBy);
         } catch (Exception e) {
