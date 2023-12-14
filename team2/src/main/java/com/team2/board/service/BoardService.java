@@ -1,6 +1,5 @@
 package com.team2.board.service;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,10 +15,25 @@ public class BoardService implements IBoardService {
 	IBoardRepository boardRepository;
 
 	@Override
-	public void createBoard(BoardVO board) {
+	public void createBoard(BoardVO board, int maxId) {
 		System.out.println(board);
+		board.setBoardId(maxId+1);
 		boardRepository.createBoard(board);
 	}
+	
+//	public void createBoard(BoardVO board, int maxId) {
+//	    // MyBatis나 JDBC를 사용하여 데이터베이스 연결 및 SQL 실행하는 코드
+//	    try(SqlSession sqlSession = sqlSessionFactory.openSession()) {
+//	        // MyBatis의 Mapper를 사용하여 SQL 실행
+//	        BoardMapper boardMapper = sqlSession.getMapper(BoardMapper.class);
+//	        
+//	        // board 객체와 maxId 값을 매개변수로 전달하여 SQL 실행
+//	        boardMapper.createBoard(board, maxId);
+//	        
+//	        sqlSession.commit(); // 변경사항 커밋
+//	    }
+//	}
+
 
 	@Override
 	public void updateBoard(BoardVO board) {
@@ -45,5 +59,11 @@ public class BoardService implements IBoardService {
 	public void deleteReply(int replyId) {
 		boardRepository.deleteReply(replyId);
 	}
+
+	@Override
+	public int maxBoardId() {
+		return boardRepository.maxBoardId();
+	}
+	
 
 }
