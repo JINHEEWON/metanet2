@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.team2.member.model.Member;
+import com.team2.member.model.Email;
+import com.team2.member.model.MemberId;
 import com.team2.member.repository.IMemberRepository;
 
 @Service
@@ -45,5 +47,15 @@ public class MemberService implements IMemberService {
         memberDao.getPassword(memberId, email, phone);
         return "비밀번호 업데이트 성공";
     }
+
+	@Override
+	public boolean checkEmail(Email email) {
+		return memberDao.checkEmail(email);		
+	}
+
+	@Override
+	public boolean checkMemberId(MemberId memberId) {
+		return memberDao.checkMemberId(memberId);
+	}
 }
 
