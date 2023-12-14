@@ -46,4 +46,13 @@ public class BoardService implements IBoardService {
 		boardRepository.deleteReply(replyId);
 	}
 
+	@Override
+	public List<BoardVO> getBoardList(
+		int teamId, 
+		int start, 
+		int end, 
+		String order_by
+	) {
+		return boardRepository.getBoardList(teamId, start, end, order_by);
+	}
 }

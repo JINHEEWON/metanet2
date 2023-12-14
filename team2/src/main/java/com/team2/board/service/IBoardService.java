@@ -2,6 +2,8 @@ package com.team2.board.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.team2.board.model.Board;
 import com.team2.board.model.BoardVO;
 import com.team2.board.model.ReplyVO;
@@ -15,4 +17,11 @@ public interface IBoardService {
 	public void createReply(ReplyVO reply);
 	public void updateReply(ReplyVO reply);
 	public void deleteReply(int replyId);
+	
+	public List<BoardVO> getBoardList(
+		int teamId,
+		int page,
+		int per_page,
+		String order_by
+	); 
 }
