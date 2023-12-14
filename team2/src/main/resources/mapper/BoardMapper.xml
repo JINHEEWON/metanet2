@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.team2.board.repository.IBoardRepository">
+    
+    <insert id="createBoard" parameterType="com.team2.board.model.BoardVO">
+		<![CDATA[ 
+		INSERT INTO BOARD 
+		(BOARD_ID, TEAM_ID, TITLE, CONTENT, WRITE_DATE, UPDATE_DATE, READ_NUM, MEMBER_ID)
+		VALUES 
+			(#{boardId}, #{teamId}, #{title}, #{content},
+			#{writeDate}, #{updateDate}, #{readNum}, #{memberId})
+			]]>
+	</insert>
+	
+	<update id="updateBoard" parameterType="com.team2.board.model.BoardVO">
+		UPDATE BOARD
+		SET 
+			BOARD_ID=#{boardId}, TEAM_ID=#{teamId}, TITLE=#{title},
+			CONTENT=#{content}, WRITE_DATE=#{writeDate}, UPDATE_DATE=#{updateDate},
+			READ_NUM=#{readNum}, MEMBER_ID=#{memberId}
+		WHERE BOARD_ID=#{boardId}
+	</update>
+	
+	<delete id="deleteBoard" parameterType="int">
+		DELETE BOARD 
+		WHERE BOARD_ID=#{boardId}
+	</delete>
+	
+	<insert id="createReply" parameterType="com.team2.board.model.ReplyVO">
+		<![CDATA[ INSERT INTO REPLY 
+			(REPLY_ID, CONTENT, WRITE_DATE, BOARD_ID, MEMBER_ID) 
+		VALUES 
+			(#{replyId}, #{content}, #{writeDate},
+			#{boardId}, #{memberId})
+		]]>
+	</insert>
+	
+	<update id="updateReply" parameterType="com.team2.board.model.ReplyVO">
+		UPDATE REPLY
+		SET 
+			REPLY_ID=#{replyId}, CONTENT=#{content}, WRITE_DATE=#{writeDate},
+			BOARD_ID=#{boardId}, MEMBER_ID=#{memberId}
+		WHERE REPLY_ID=#{replyId}
+	</update>
+	
+	<delete id="deleteReply" parameterType="int">
+		DELETE REPLY
+		WHERE REPLY_ID=#{replyId}
+	</delete>
+	 
+</mapper>
