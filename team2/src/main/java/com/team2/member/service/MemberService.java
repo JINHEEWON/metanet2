@@ -1,11 +1,14 @@
 package com.team2.member.service;
 
-import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.team2.member.model.Member;
+import com.team2.member.model.MemberDelete;
+import com.team2.member.model.MemberFindInfo;
 import com.team2.member.repository.IMemberRepository;
 
 @Service
@@ -30,20 +33,39 @@ public class MemberService implements IMemberService {
     }
 
     @Override
-    public void deleteMember(Member member) {
-        memberDao.deleteMember(member);
+    public int deleteMember(MemberDelete memberDelete) {
+        return memberDao.deleteMember(memberDelete);
     }
 
     @Override
-    public String getId(String email, String phone) {
-        return memberDao.getId(email, phone);
+    public String getId(MemberFindInfo memberFindInfo) {
+        return memberDao.getId(memberFindInfo.getEmail(), memberFindInfo.getPhone());
     }
 
     @Override
-    public String updatePassword(String memberId, String password, String email, String phone) {
-        memberDao.updatePassword(memberId, password, email, phone);
-        memberDao.getPassword(memberId, email, phone);
-        return "비밀번호 업데이트 성공";
+    @Transactional("transactionManager")
+    public String updatePassword(MemberFindInfo memberFindInfo) {
+    	//비밀번호 랜덤값으로 생성
+    	Random random = new Random();
+        StringBuffer password = new StringBuffer();
+        while(password.length()<8){
+            if(random.nextBoolean()){
+                password.append((char)((int)(random.nextInt(26))+65));
+            }
+            else{
+                password.append(random.nextInt(10));
+            }                
+        }
+        
+        //회원정보 업데이트
+        int result = memberDao.updatePassword(memberFindInfo.getMemberId(), password.toString(), memberFindInfo.getEmail(), memberFindInfo.getPhone());
+        if(result != 1) {
+        	return "회원정보가 일치하지 않습니다.";
+        }
+        
+        //업데이트된 비밀번호 검색
+        memberDao.getPassword(memberFindInfo);
+        return password.toString();
     }
 }
 

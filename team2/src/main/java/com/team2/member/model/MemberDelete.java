@@ -7,12 +7,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class Member {
+public class MemberDelete {
     private String memberId;
-    private String name;
     private String password;
-    private String email;
-    private String phone;
-    private String birth;
-    private int teamId;
 }
