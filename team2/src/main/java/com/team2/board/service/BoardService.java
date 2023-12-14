@@ -1,6 +1,8 @@
 package com.team2.board.service;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +18,6 @@ public class BoardService implements IBoardService {
 
 	@Override
 	public void createBoard(BoardVO board, int maxId) {
-		System.out.println(board);
 		board.setBoardId(maxId+1);
 		boardRepository.createBoard(board);
 	}
@@ -46,7 +47,8 @@ public class BoardService implements IBoardService {
 	}
 
 	@Override
-	public void createReply(ReplyVO reply) {
+	public void createReply(ReplyVO reply, int maxId) {
+		reply.setReplyId(maxId+1);
 		boardRepository.createReply(reply);
 	}
 
@@ -73,5 +75,9 @@ public class BoardService implements IBoardService {
 		return boardRepository.maxBoardId();
 	}
 	
+	@Override
+	public int maxReplyId() {
+		return boardRepository.maxReplyId();
+	}
 
 }

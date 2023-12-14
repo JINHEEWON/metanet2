@@ -1,5 +1,7 @@
 package com.team2.board.repository;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -27,5 +29,5 @@ public interface IBoardRepository {
 		@Param("order_by") String order_by
 	); 
 	public int maxBoardId();
-	
+	public int maxReplyId();
 }

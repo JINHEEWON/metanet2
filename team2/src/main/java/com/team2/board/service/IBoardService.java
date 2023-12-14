@@ -14,7 +14,7 @@ public interface IBoardService {
 	public void updateBoard(BoardVO board);
 	public void deleteBoard(int boardId);
 	
-	public void createReply(ReplyVO reply);
+	public void createReply(ReplyVO reply, int maxId);
 	public void updateReply(ReplyVO reply);
 	public void deleteReply(int replyId);
 	
@@ -25,4 +25,5 @@ public interface IBoardService {
 		String order_by
 	); 
 	public int maxBoardId();
+	public int maxReplyId();
 }

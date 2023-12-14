@@ -11,6 +11,7 @@ import com.team2.board.service.IBoardService;
 
 
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,7 +38,7 @@ public class BoardController {
 
 	@PostMapping(value="/createReply") 
 	public ReplyVO test2(@RequestBody ReplyVO reply) {
-		boardService.createReply(reply);
+		boardService.createReply(reply, boardService.maxReplyId());
 		return reply;
 	}
 	

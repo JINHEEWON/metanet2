@@ -91,6 +91,8 @@
 	<select id="maxBoardId" resultType="int"> 
 		SELECT MAX(BOARD_ID) FROM BOARD
 	</select>
-	
+	<select id="maxReplyId" resultType="int"> 
+		SELECT MAX(Reply_ID) FROM REPLY
+	</select>
 	 
 </mapper>
