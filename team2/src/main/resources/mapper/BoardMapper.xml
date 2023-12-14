@@ -24,7 +24,7 @@
 	</update>
 	
 	<delete id="deleteBoard" parameterType="int">
-		DELETE FROM BOARD 
+		DELETE BOARD 
 		WHERE BOARD_ID=#{boardId}
 	</delete>
 	
@@ -46,7 +46,7 @@
 	</update>
 	
 	<delete id="deleteReply" parameterType="int">
-		DELETE FROM REPLY 
+		DELETE REPLY
 		WHERE REPLY_ID=#{replyId}
 	</delete>
 	 
