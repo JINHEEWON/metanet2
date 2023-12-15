@@ -18,15 +18,15 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+public class SecurityConfig { // User와 Admin을 구분하는 용도임 
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 		http.formLogin((formLogin) -> formLogin
 				.loginPage("/member/login")
-				.usernameParameter("userid")
-				.defaultSuccessUrl("/"))
+				.usernameParameter("memberId")
+				.defaultSuccessUrl("/member/success"))
 			.logout((logout) -> logout
 				.logoutUrl("/member/logout")
 				.logoutSuccessUrl("/member/login")

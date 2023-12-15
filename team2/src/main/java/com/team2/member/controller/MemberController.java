@@ -1,6 +1,9 @@
 package com.team2.member.controller;
 
 import java.util.UUID;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,25 +25,33 @@ import org.springframework.web.bind.annotation.RestController;
 import com.team2.member.model.Member;
 import com.team2.member.model.MemberDelete;
 import com.team2.member.model.MemberFindInfo;
+import com.team2.common.filter.LoginInterceptor;
+import com.team2.member.MemberValidator;
 import com.team2.member.model.Email;
 import com.team2.member.model.Member;
 import com.team2.member.model.MemberId;
 import com.team2.member.service.IMemberService;
+
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/member")
 public class MemberController {
-	
+
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
 	@Autowired
 	IMemberService memberService;
 
-//	@Autowired
-//	MemberValidator memberValidator;
+	@Autowired
+	MemberValidator memberValidator;
 
-   
-	// checkEmail 회원가입 시 이미 등록된 이메일이 있는지 확인하기 위함
-	@PostMapping("/checkEmail")
+	@Autowired
+	private LoginInterceptor loginInterceptor;
+
+	// 중복 이메일 확인
+	@PostMapping("/checkemail")
 	@ResponseBody
 	public ResponseEntity<String> checkEmail2(@RequestBody Email email) {
 		boolean emailAvailable = !memberService.checkEmail(email.getEmail());
@@ -53,7 +64,7 @@ public class MemberController {
 	}
 
 	// 중복 아이디 확인
-	@PostMapping("/checkMemberId")
+	@PostMapping("/checkmemberid")
 	@ResponseBody
 	public ResponseEntity<String> checkMemberId2(@RequestBody MemberId memberId) {
 		boolean memberIdAvailable = !memberService.checkMemberId(memberId.getMemberId());
@@ -97,60 +108,62 @@ public class MemberController {
 		memberService.insertMember(member);
 		return ResponseEntity.ok("회원가입 성공");
 	}
-
-	// login
-	@GetMapping(value = "/login")
-	public String login() {
-		return "member/login";
+	
+	@GetMapping("/success")
+	@ResponseBody
+	public ResponseEntity<String> loginSuccess() {
+		return ResponseEntity.ok("로그인 성공");
 	}
 
-   //회원정보 검색(마이페이지)
-   @GetMapping(value="/mypage/{memberId}")
-   public Member selectMemberInfo(@PathVariable String memberId) {
-	   Member member =  memberService.selectMember(memberId);
-	   return member;
-   }
-		
-   //회원정보 수정
+
+	// 회원정보 검색(마이페이지)
+	@GetMapping(value = "/mypage/{memberId}")
+	public Member selectMemberInfo(@PathVariable String memberId) {
+		Member member = memberService.selectMember(memberId);
+		return member;
+	}
+
+	// 회원정보 수정
 	@PutMapping("/update")
 	public Member updateMemberInfo(@RequestBody Member member) {
-		if(!member.getPassword().equals(member.getPassword2())) {
+		if (!member.getPassword().equals(member.getPassword2())) {
 			return null;
 		}
-		//password 암호화
+		// password 암호화
 		PasswordEncoder pwEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 		String encodedPw = pwEncoder.encode(member.getPassword());
 		member.setPassword(encodedPw);
-		
+
 		memberService.updateMember(member);
 		Member resultMember = memberService.selectMember(member.getMemberId());
 		return resultMember;
 	}
-	
-   //회원 탈퇴
+
+	// 회원 탈퇴
 	@DeleteMapping("/delete")
 	public String deleteMemberInfo(@RequestBody MemberDelete memberDelete) {
 		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 		String dbpw = memberService.getPassword(memberDelete.getMemberId());
-		if(memberDelete.getPassword() != null && passwordEncoder.matches(memberDelete.getPassword(), dbpw)) {
+		if (memberDelete.getPassword() != null && passwordEncoder.matches(memberDelete.getPassword(), dbpw)) {
 			memberDelete.setPassword(dbpw);
 			memberService.deleteMember(memberDelete);
-			return memberDelete.getMemberId()+" 회원정보 삭제";
-		}else {
+			return memberDelete.getMemberId() + " 회원정보 삭제";
+		} else {
 			return "비밀번호를 다시 확인해주세요";
 		}
 	}
-	
-   // 아이디찾기
+
+	// 아이디찾기
 	@PostMapping("/find/username")
 	public String findUsername(@RequestBody MemberFindInfo memberFindInfo) {
-		String memberId = memberService.getId(memberFindInfo);;
-		if(memberId == null) {
+		String memberId = memberService.getId(memberFindInfo);
+		;
+		if (memberId == null) {
 			memberId = "회원 정보가 존재하지 않습니다.";
 		}
 		return memberId;
 	}
-	
+
 	// 비밀번호 찾기(새로운 비밀번호 발급 후 리턴)
 	@PostMapping("/find/password")
 	public String findPassword(@RequestBody MemberFindInfo memberFindInfo) {

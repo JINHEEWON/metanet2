@@ -8,7 +8,6 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.team2.member.model.Member;
 import com.team2.member.model.MemberDelete;
 import com.team2.member.model.MemberFindInfo;
@@ -98,5 +97,6 @@ public class MemberService implements IMemberService {
     public boolean checkMemberId2(String memberId) {
         return memberDao.checkMemberId2(memberId);
     }
+
 }
 
