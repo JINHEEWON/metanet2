@@ -74,7 +74,7 @@
 		    MEMBER_ID,
 		    ROW_NUMBER() OVER (ORDER BY BOARD_ID DESC) AS RN
 		  FROM BOARD
-		  where <if test="teamId != -1"> TEAM_ID=#{teamId} </if>
+		  <if test="teamId != -1"> where TEAM_ID=#{teamId} </if>
 		)
 		SELECT 
 		  BOARD_ID, 

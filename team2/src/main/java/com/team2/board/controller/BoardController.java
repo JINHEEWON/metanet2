@@ -12,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import com.team2.board.model.BoardUploadFile;
 import com.team2.board.model.BoardVO;
-import com.team2.board.model.ReplyVO;
 import com.team2.board.service.IBoardService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,43 +26,39 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
-@RequestMapping("/b")
+@RequestMapping("/board")
 public class BoardController {
 
 	@Autowired
 	IBoardService boardService;
 	
-//	@PostMapping(value="/create") 
-//	public BoardVO testing(@RequestBody BoardVO board) {
-//		System.out.println(board);
-//		boardService.createBoard(board);
-//		return board;
-//	}
-	
+	// 게시글 작성 파일 없이 
 	@PostMapping(value="/create") 
-	public BoardVO testing(@RequestBody BoardVO board) {
+	public BoardVO createBoard(@RequestBody BoardVO board) {
 		boardService.createBoard(board,boardService.maxBoardId());
 		return board;
 	}
 	
-	// 게시판 작성시 파일을 같이 첨부할때
-	@PostMapping(value="/create2") 
-	public BoardVO testing2(@RequestPart(value="file", required = false) MultipartFile file, 
-			@RequestPart(value="board") BoardVO board) {
-		System.out.println(board);
-//		if(csrfToken==null || "".equals(csrfToken)) {
-//			throw new RuntimeException("CSRF 토큰이 없습니다.");
-//		}else if(!csrfToken.equals(session.getAttribute("csrfToken"))) {
-//			throw new RuntimeException("잘 못된 접근이 감지되었습니다.");
-//		}
+	// 게시글 작성 파일 같이
+	@PostMapping(value="/create_file") 
+	public BoardVO createBoardWithFile(
+			@RequestPart(value="file", required = false) MultipartFile file, 
+			@RequestPart(value="board") BoardVO board
+	) {
 		try{
-			//MultipartFile file = board.getFile();
 			if(file!=null && !file.isEmpty()) {
 				BoardUploadFile newfile = new BoardUploadFile();
-				newfile.setFileName(file.getOriginalFilename());
-				newfile.setFileSize(file.getSize());
-				newfile.setFileContentType(file.getContentType());
-				newfile.setFileData(file.getBytes());
+				String fileName = file.getOriginalFilename();
+				Long fileSize = file.getSize();
+				String fileContentType = file.getContentType();
+				byte[] bytes = file.getBytes();
+				newfile.setFileName(fileName);
+				newfile.setFileSize(fileSize);
+				newfile.setFileContentType(fileContentType);
+				newfile.setFileData(bytes);
+				board.setFileName(fileName);
+				board.setFileSize(fileSize);
+				board.setFileContentType(fileContentType);
 				boardService.createBoard(board, newfile);
 			}else {
 				boardService.createBoard(board,boardService.maxBoardId());
@@ -71,13 +66,12 @@ public class BoardController {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
 		return board;
 	}
 	
 	// 파일만 따로 보낼때
     @PostMapping("/upload")
-    public ResponseEntity upload(@RequestPart MultipartFile file) {
+    public ResponseEntity uploadFile(@RequestPart MultipartFile file) {
         String originalFileName = file.getOriginalFilename();
         File destination = new File("upload/dir" + originalFileName);
         try {
@@ -88,6 +82,7 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.CREATED).body(originalFileName);
     }
 	
+    // 파일 정보 가져오기 
 	@GetMapping("/file/{fileId}")
 	public ResponseEntity<byte[]> getFile(@PathVariable int fileId) {
 		BoardUploadFile file = boardService.getFile(fileId);
@@ -105,13 +100,7 @@ public class BoardController {
 		return new ResponseEntity<byte[]>(file.getFileData(), headers, HttpStatus.OK);
 	}
 	
-
-	@PostMapping(value="/createReply") 
-	public ReplyVO test2(@RequestBody ReplyVO reply) {
-		boardService.createReply(reply, boardService.maxReplyId());
-		return reply;
-	}
-	
+	// 게시글 삭제 
 	@DeleteMapping("/delete/{boardId}")
 	public String deleteBoard(@PathVariable int boardId) {
 		try {
@@ -123,29 +112,15 @@ public class BoardController {
 		return "success";
 	}
 	
-	@DeleteMapping("/deleteReply/{replyId}")
-	public String deleteReply(@PathVariable int replyId) {
-		try {
-			boardService.deleteReply(replyId);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "fail";
-		}
-		return "success";
-	}
-
+	// 게시글 수정 
 	@PutMapping("/update")
 	public BoardVO putMethodName(@RequestBody BoardVO board) {
 		boardService.updateBoard(board);
 		return board;
 	}
 	
-	@PutMapping("/updateReply")
-	public ReplyVO updateReply(@RequestBody ReplyVO reply) {
-		boardService.updateReply(reply);
-		return reply;
-	}
 	
+	// 자유 게시판 조회 
     @GetMapping("/free")
     public List<BoardVO> getFreeBoardList(
             @RequestParam(name = "teamId", defaultValue = "1") int teamId,
@@ -165,6 +140,7 @@ public class BoardController {
         return boards;
     }
     
+    // 팀별 게시판 조회 
     @GetMapping("/team/{teamId}")
     public List<BoardVO> getBoardListSearchByTeamId(
             @PathVariable int teamId,
@@ -184,6 +160,7 @@ public class BoardController {
         return boards;
     }
     
+    // 전체 게시판 조회 ( 자유 + 팀별 ) 
     @GetMapping("/all") 
     public List<BoardVO> getAllBoardList(
             @RequestParam(name = "teamId", defaultValue = "-1") int teamId,
@@ -202,6 +179,7 @@ public class BoardController {
         return boards;
     }
     
+    // 게시판 조회 
     @GetMapping("/{boardId}")
     public BoardVO getBoardInfo(@PathVariable int boardId) {
     	try {
@@ -215,6 +193,9 @@ public class BoardController {
     	}
     }
     
+    // 게시글 검색
+    // title, content, member 별
+    // paging 처리  
     @GetMapping("/search") 
     public List<BoardVO> getBoardListSearchByTitle(
             @RequestParam(name = "title", defaultValue = "") String title,
@@ -235,6 +216,7 @@ public class BoardController {
     	return boards;
     }
     
+    // 보드 팀 추가 
     @PostMapping("/create/board_team/{boardTeamId}")
     public int createBoardTeam(@PathVariable int boardTeamId) {
     	boardService.createBoardTeam(boardTeamId);

@@ -33,7 +33,6 @@ public class SecurityConfig {
 				.invalidateHttpSession(true));
 		http.authorizeHttpRequests()
 			.requestMatchers("/file/**").hasRole("ADMIN")
-			.requestMatchers("/board/**").hasAnyRole("USER","ADMIN")
 			.requestMatchers("/**","/css/**","/js/**","/images/**").permitAll()
 			.requestMatchers("/member/insert","/member/login").permitAll();
 		return http.build();
