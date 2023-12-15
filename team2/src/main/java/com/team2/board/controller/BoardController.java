@@ -67,15 +67,15 @@ public class BoardController {
 		return "success";
 	}
 
-	@PutMapping("/update/{boardId}")
-	public BoardVO putMethodName(@PathVariable int boardId, @RequestBody BoardVO board) {
+	@PutMapping("/update")
+	public BoardVO putMethodName(@RequestBody BoardVO board) {
 		board.setUpdateDate(currentTime());
 		boardService.updateBoard(board);
 		return board;
 	}
 	
-	@PutMapping("/updateReply/{replyId}")
-	public ReplyVO updateReply(@PathVariable int replyId, @RequestBody ReplyVO reply) {
+	@PutMapping("/updateReply")
+	public ReplyVO updateReply(@RequestBody ReplyVO reply) {
 		boardService.updateReply(reply);
 		return reply;
 	}
