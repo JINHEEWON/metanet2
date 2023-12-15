@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
-@RequestMapping("/b")
+@RequestMapping("/board")
 public class BoardController {
 
 	@Autowired

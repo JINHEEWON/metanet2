@@ -12,8 +12,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
-import com.team2.common.filter.LoginInterceptor;
-
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
@@ -40,10 +38,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		return lci;
 	}
 	
-	@Bean
-	public LoginInterceptor loginInterceptor() {
-		return new LoginInterceptor();
-	}
+//	@Bean
+//	public LoginInterceptor loginInterceptor() {
+//		return new LoginInterceptor();
+//	}
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
