@@ -71,6 +71,12 @@ public class BoardService implements IBoardService {
 	) {
 		return boardRepository.getBoardList(teamId, start, end, order_by);
 	}
+	
+	@Override
+	public List<BoardVO> getBoardListSearchByTitle(String searchText, int start, int end, String order_by) {
+		return boardRepository.getBoardListSearchByTitle(searchText, start, end, order_by);
+	}
+	
 	public int maxBoardId() {
 		return boardRepository.maxBoardId();
 	}

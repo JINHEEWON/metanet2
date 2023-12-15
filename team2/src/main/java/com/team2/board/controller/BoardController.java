@@ -149,6 +149,24 @@ public class BoardController {
     	}
     }
     
+    @GetMapping("/search") 
+    public List<BoardVO> getBoardListSearchByTitle(
+            @RequestParam(name = "title", defaultValue = "") String title,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "per_page", defaultValue = "10") int perPage,
+            @RequestParam(name = "order_by", defaultValue = "default") String orderBy
+    ) {
+        List<BoardVO> boards = new ArrayList<>();
+    	try {
+            int start = page * perPage;
+            int end = page * perPage + perPage;
+    		boards = boardService.getBoardListSearchByTitle(title, start, end, orderBy);
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    	return boards;
+    }
+    
 	private Date currentTime() {
         // 현재 날짜와 시간 얻기
         java.util.Date currentDate = new java.util.Date();
