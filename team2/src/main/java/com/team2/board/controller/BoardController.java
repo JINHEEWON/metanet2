@@ -70,7 +70,7 @@ public class BoardController {
 	}
 	
 	// 파일만 따로 보낼때
-    @PostMapping("/upload/{teamId}")
+    @PostMapping("/upload")
     public ResponseEntity uploadFile(@RequestPart MultipartFile file) {
         String originalFileName = file.getOriginalFilename();
         File destination = new File("upload/dir" + originalFileName);
@@ -113,7 +113,7 @@ public class BoardController {
 	}
 	
 	// 게시글 수정 
-	@PutMapping("/update")
+	@PutMapping("/update/{teamId}")
 	public BoardVO putMethodName(@RequestBody BoardVO board) {
 		boardService.updateBoard(board);
 		return board;
