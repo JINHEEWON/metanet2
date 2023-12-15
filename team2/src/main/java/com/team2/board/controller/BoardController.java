@@ -152,6 +152,8 @@ public class BoardController {
     @GetMapping("/search") 
     public List<BoardVO> getBoardListSearchByTitle(
             @RequestParam(name = "title", defaultValue = "") String title,
+            @RequestParam(name = "content", defaultValue = "") String content,
+            @RequestParam(name= "memberId", defaultValue = "") String memberId,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "per_page", defaultValue = "10") int perPage,
             @RequestParam(name = "order_by", defaultValue = "default") String orderBy
@@ -160,7 +162,7 @@ public class BoardController {
     	try {
             int start = page * perPage;
             int end = page * perPage + perPage;
-    		boards = boardService.getBoardListSearchByTitle(title, start, end, orderBy);
+    		boards = boardService.getBoardListSearch(title, content, memberId, start, end, orderBy);
     	} catch (Exception e) {
     		e.printStackTrace();
     	}

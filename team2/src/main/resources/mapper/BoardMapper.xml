@@ -89,7 +89,7 @@
 		WHERE RN BETWEEN #{start} AND #{end}
 	</select>
 	
-	<select id="getBoardListSearchByTitle" resultMap="boardResultMap">
+	<select id="getBoardListSearch" resultMap="boardResultMap">
 		WITH PAGINATED_BOARD AS (
 		  SELECT 
 		    BOARD_ID, 
@@ -102,7 +102,7 @@
 		    MEMBER_ID,
 		    ROW_NUMBER() OVER (ORDER BY BOARD_ID DESC) AS RN
 		  FROM BOARD
-	    	WHERE TITLE LIKE '%' || #{searchText} || '%'
+	    	WHERE TITLE LIKE '%' || #{title} || '%' and CONTENT LIKE '%' || #{content} || '%' and MEMBER_ID LIKE '%' || #{memberId} || '%'
 		)
 		SELECT 
 		  BOARD_ID, 
@@ -116,6 +116,7 @@
 		FROM PAGINATED_BOARD
 		WHERE RN BETWEEN #{start} AND #{end}
 	</select>
+	
 	
 	<select id="maxBoardId" resultType="int"> 
 		SELECT MAX(BOARD_ID) FROM BOARD

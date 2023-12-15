@@ -36,6 +36,15 @@ public interface IBoardRepository {
 		@Param("order_by") String order_by
 	);
 	
+	public List<BoardVO> getBoardListSearch(
+		@Param("title") String title,
+		@Param("content") String content,
+		@Param("memberId") String memberId,
+		@Param("start") int start,
+		@Param("end") int end,
+		@Param("order_by") String order_by
+	);
+	
 	public int maxBoardId();
 	public int maxReplyId();
 	
