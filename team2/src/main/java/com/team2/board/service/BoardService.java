@@ -73,11 +73,6 @@ public class BoardService implements IBoardService {
 	}
 	
 	@Override
-	public List<BoardVO> getBoardListSearchByTitle(String searchText, int start, int end, String order_by) {
-		return boardRepository.getBoardListSearchByTitle(searchText, start, end, order_by);
-	}
-	
-	@Override
 	public List<BoardVO> getBoardListSearch(String title, String content, String memberId, int start, int end,
 			String order_by) {
 		return boardRepository.getBoardListSearch(title, content, memberId, start, end, order_by);
@@ -95,6 +90,11 @@ public class BoardService implements IBoardService {
 	@Override
 	public BoardVO getBoardInfo(int boardId) {
 		return boardRepository.getBoardInfo(boardId);
+	}
+	
+	@Override
+	public void createBoardTeam(int teamId) {
+		boardRepository.createBoardTeam(teamId);
 	}
 
 }

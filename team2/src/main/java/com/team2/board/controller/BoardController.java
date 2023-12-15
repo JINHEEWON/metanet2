@@ -169,6 +169,12 @@ public class BoardController {
     	return boards;
     }
     
+    @PostMapping("/create/board_team/{boardTeamId}")
+    public int createBoardTeam(@PathVariable int boardTeamId) {
+    	boardService.createBoardTeam(boardTeamId);
+    	return boardTeamId;
+    }
+    
 	private Date currentTime() {
         // 현재 날짜와 시간 얻기
         java.util.Date currentDate = new java.util.Date();
