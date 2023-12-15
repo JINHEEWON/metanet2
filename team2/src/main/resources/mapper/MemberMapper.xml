@@ -4,29 +4,28 @@
 
 <mapper namespace="com.team2.member.repository.IMemberRepository">
 
-<select id="selectMember" parameterType="string">
+<select id="selectMember" parameterType="string" resultType="com.team2.member.model.Member">
 <![CDATA[
       SELECT 
-         member_id,
-         name,
-         password,
-         email,
-         phone,
-         birth,
-         team 
+         member_id AS memberId,
+         name AS name,
+         password AS password,
+         email AS email,
+         phone AS phone,
+         birth AS birth,
+         team_id AS teamId
       FROM 
          member 
       WHERE member_id=#{memberId}
    ]]>
    </select>
 
-
 <insert id="insertMember" parameterType="com.team2.member.model.Member">
    <![CDATA[
       INSERT INTO 
-         member (member_id, name, password, email, phone, birth, team) 
+         member (member_id, name, password, email, phone, birth, team_id) 
       VALUES 
-         (#{memberId}, #{name}, #{password}, #{email}, #{phone}, #{birth}, #{team})
+         (#{memberId}, #{name}, #{password}, #{email}, #{phone}, #{birth}, #{teamId})
    ]]>
    </insert>
 
@@ -35,13 +34,13 @@
    <![CDATA[
       UPDATE MEMBER
       SET 
-         name=#{name}, password=#{password}, email=#{email}, phone=#{phone}, birth=#{birth}, team=#{team}
+         name=#{name}, password=#{password}, email=#{email}, phone=#{phone}, birth=#{birth}, team_id=#{teamId}
       WHERE 
          member_id=#{memberId}
    ]]>
    </update>
 
-<delete id="deleteMember" parameterType="com.team2.member.model.Member">
+<delete id="deleteMember" parameterType="com.team2.member.model.MemberDelete">
    <![CDATA[
       DELETE FROM
          member 
@@ -52,17 +51,17 @@
 
 
 
-<select id="getId">
+<select id="getId" resultType="string">
 <![CDATA[
       SELECT 
-         member_id,   
+         member_id   
       FROM 
          member 
       WHERE email=#{email} AND phone=#{phone}
    ]]>
    </select>
 
-<select id="getPassword">
+<select id="getPassword" parameterType="com.team2.member.model.MemberFindInfo" resultType="string">
 <![CDATA[
       SELECT 
          password   
