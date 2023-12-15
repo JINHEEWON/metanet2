@@ -138,5 +138,12 @@
 		FROM BOARD
 		Where BOARD_ID=#{boardId}
 	</select>
+	
+	<insert id="createBoardTeam" parameterType="int">
+		INSERT INTO BOARD_TEAM
+		(TEAM_ID)
+		VALUES
+		(#{teamId})
+	</insert>
 	 
 </mapper>
