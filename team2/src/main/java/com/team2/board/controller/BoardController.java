@@ -40,17 +40,25 @@ public class BoardController {
 	}
 	
 	// 게시글 작성 파일 같이
-	@PostMapping(value="/create2") 
-	public BoardVO createBoardWithFile(@RequestPart(value="file", required = false) MultipartFile file, 
-			@RequestPart(value="board") BoardVO board) {
-		System.out.println(board);
+	@PostMapping(value="/create_file") 
+	public BoardVO createBoardWithFile(
+			@RequestPart(value="file", required = false) MultipartFile file, 
+			@RequestPart(value="board") BoardVO board
+	) {
 		try{
 			if(file!=null && !file.isEmpty()) {
 				BoardUploadFile newfile = new BoardUploadFile();
-				newfile.setFileName(file.getOriginalFilename());
-				newfile.setFileSize(file.getSize());
-				newfile.setFileContentType(file.getContentType());
-				newfile.setFileData(file.getBytes());
+				String fileName = file.getOriginalFilename();
+				Long fileSize = file.getSize();
+				String fileContentType = file.getContentType();
+				byte[] bytes = file.getBytes();
+				newfile.setFileName(fileName);
+				newfile.setFileSize(fileSize);
+				newfile.setFileContentType(fileContentType);
+				newfile.setFileData(bytes);
+				board.setFileName(fileName);
+				board.setFileSize(fileSize);
+				board.setFileContentType(fileContentType);
 				boardService.createBoard(board, newfile);
 			}else {
 				boardService.createBoard(board,boardService.maxBoardId());
