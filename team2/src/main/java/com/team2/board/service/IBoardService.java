@@ -25,13 +25,6 @@ public interface IBoardService {
 		String order_by
 	); 
 	
-	public List<BoardVO> getBoardListSearchByTitle(
-		String searchText,
-		int start,
-		int end,
-		String order_by
-	);
-	
 	public List<BoardVO> getBoardListSearch(
 		String title,
 		String content,
@@ -45,4 +38,6 @@ public interface IBoardService {
 	public int maxReplyId();
 	
 	public BoardVO getBoardInfo(int boardId);
+	
+	public void createBoardTeam(int teamId);
 }
