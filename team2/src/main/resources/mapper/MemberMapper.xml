@@ -136,25 +136,4 @@
     ]]>
 	</select>
 
-	<!-- 로그인을 위한 select 문 추가 -->
-	<select id="loginMember"
-		parameterType="com.team2.member.model.Login" resultType="Member">
-    <![CDATA[
-        SELECT 
-            member_id AS memberId,
-            name AS name,
-            password AS password,
-            email AS email,
-            phone AS phone,
-            birth AS birth,
-            team_id AS teamId
-        FROM 
-            member 
-        WHERE 
-            member_id = #{memberId} AND password = #{password}
-    ]]>
-	</select>
-
-
-
 </mapper>

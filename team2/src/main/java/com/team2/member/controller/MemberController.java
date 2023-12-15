@@ -28,7 +28,6 @@ import com.team2.member.model.MemberFindInfo;
 import com.team2.common.filter.LoginInterceptor;
 import com.team2.member.MemberValidator;
 import com.team2.member.model.Email;
-import com.team2.member.model.Login;
 import com.team2.member.model.Member;
 import com.team2.member.model.MemberId;
 import com.team2.member.service.IMemberService;
@@ -109,18 +108,12 @@ public class MemberController {
 		memberService.insertMember(member);
 		return ResponseEntity.ok("회원가입 성공");
 	}
-
-	@PostMapping("/login")
-    @ResponseBody
-    public ResponseEntity<String> login(@RequestBody Login login) {
-        // 여기에서 로그인 로직을 수행하고 결과에 따라 응답을 반환
-		
-        if ("memberId".equals(login.getMemberId()) && "password".equals(login.getPassword())) {
-            return ResponseEntity.ok("로그인 성공");
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패");
-        }
-    }
+	
+	@GetMapping("/success")
+	@ResponseBody
+	public ResponseEntity<String> loginSuccess() {
+		return ResponseEntity.ok("로그인 성공");
+	}
 
 
 	// 회원정보 검색(마이페이지)

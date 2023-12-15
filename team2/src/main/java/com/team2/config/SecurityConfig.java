@@ -18,52 +18,60 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
-
+public class SecurityConfig { // User와 Admin을 구분하는 용도임 
+	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.csrf((csrfConfig) -> csrfConfig.disable());
-	      // 로그인 폼에 대한 설정
-	      http.formLogin((formLogin) -> formLogin
-	            // 로그인 뷰 페이지
-	            .loginPage("/login")
-	            .usernameParameter("memberId")
-	            .defaultSuccessUrl("/"))
-	      
-	      // 로그아웃
-          .logout(logout -> logout
-                // 로그아웃 뷰 페이지
-                .logoutUrl("/logout")
-                // 로그아웃에 성공했을 때 이동할 페이지
-                .logoutSuccessUrl("/login")
-                // 세션 인증 정보에 대해서 로그아웃시 비활성화
-                .invalidateHttpSession(true));
-		
-	      http.authorizeHttpRequests()
-	      	.antMatchers("/checkemail/**", "/checkmemberid/**").permitAll()
-	        .requestMatchers("/board/**").hasAnyRole("USER", "ADMIN");
-			return http.build();
-	   }
+		http.csrf().disable();
+		http.formLogin((formLogin) -> formLogin
+				.loginPage("/member/login")
+				.usernameParameter("memberId")
+				.defaultSuccessUrl("/member/success"))
+			.logout((logout) -> logout
+				.logoutUrl("/member/logout")
+				.logoutSuccessUrl("/member/login")
+				.invalidateHttpSession(true));
+		http.authorizeHttpRequests()
+			.requestMatchers("/file/**").hasRole("ADMIN")
+			.requestMatchers("/board/**").hasAnyRole("USER","ADMIN")
+			.requestMatchers("/**","/css/**","/js/**","/images/**").permitAll()
+			.requestMatchers("/member/insert","/member/login").permitAll();
+		return http.build();
+	}
 	
-	
-	
-	
-	
-	
-
 	@Bean
 	@ConditionalOnMissingBean(UserDetailsService.class)
 	public InMemoryUserDetailsManager userDetailsService() {
 		List<UserDetails> userDetailsList = new ArrayList<>();
-		userDetailsList.add(User.withUsername("foo").password("{noop}demo").roles("ADMIN").build());
-		userDetailsList.add(User.withUsername("bar").password("{noop}demo").roles("USER").build());
-		userDetailsList.add(User.withUsername("ted").password("{noop}demo").roles("ADMIN", "USER").build());
+		userDetailsList.add(User.withUsername("foo")
+				.password("{noop}demo")
+				.roles("ADMIN").build());
+		userDetailsList.add(User.withUsername("bar")
+				.password("{noop}demo")
+				.roles("USER").build());
+		userDetailsList.add(User.withUsername("ted")
+				.password("{noop}demo")
+				.roles("ADMIN","USER").build());
 		InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager(userDetailsList);
 		return manager;
 	}
-
+	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

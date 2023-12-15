@@ -21,17 +21,18 @@ public class MemberUserDetailsService implements UserDetailsService {
 
 	// UserDetailsService 인터페이스의 메서드 구현
 	@Override
-	public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
 		// 데이터베이스에서 사용자 정보 조회
-		Member memberinfo = memberService.selectMember(name);
+		Member memberinfo = memberService.selectMember(memberId);
 
 		// 조회한 사용자 정보가 없으면 예외 처리
 		if (memberinfo == null) {
-			throw new UsernameNotFoundException("[" + name + "] 사용자가 없어요");
+			throw new UsernameNotFoundException("[" + memberId + "] 사용자가 없어요");
 		}
 
 		// 사용자의 권한 문자열 배열 생성 (데이터베이스에서 조회했다고 가정)
-		String[] roles = { "ROLE-USER", "ROLE_ADMIN" };
+		String[] roles = { "ROLE_USER", "ROLE_ADMIN" };
+		
 		// 권한 리스트 생성
 		List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(roles);
 

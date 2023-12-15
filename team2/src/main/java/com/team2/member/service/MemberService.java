@@ -8,12 +8,10 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.team2.member.model.Member;
 import com.team2.member.model.MemberDelete;
 import com.team2.member.model.MemberFindInfo;
 import com.team2.member.model.Email;
-import com.team2.member.model.Login;
 import com.team2.member.model.MemberId;
 import com.team2.member.repository.IMemberRepository;
 
@@ -100,9 +98,5 @@ public class MemberService implements IMemberService {
         return memberDao.checkMemberId2(memberId);
     }
 
-	@Override
-	public Member loginMember(Login login) {
-		return memberDao.loginMember(login);
-	}
 }
 
