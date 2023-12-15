@@ -3,6 +3,9 @@ package com.team2.member.service;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,9 +46,13 @@ public class MemberService implements IMemberService {
     public String getId(MemberFindInfo memberFindInfo) {
         return memberDao.getId(memberFindInfo.getEmail(), memberFindInfo.getPhone());
     }
+    
+    @Override
+    public String getPassword(String memberId) {
+        return memberDao.getPassword(memberId);
+    }
 
     @Override
-    @Transactional("transactionManager")
     public String updatePassword(MemberFindInfo memberFindInfo) {
     	//비밀번호 랜덤값으로 생성
     	Random random = new Random();
@@ -59,15 +66,17 @@ public class MemberService implements IMemberService {
             }                
         }
         
+        //암호화
+        PasswordEncoder pwEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		String encodedPw = pwEncoder.encode(password);
+		
         //회원정보 업데이트
-        int result = memberDao.updatePassword(memberFindInfo.getMemberId(), password.toString(), memberFindInfo.getEmail(), memberFindInfo.getPhone());
-        if(result != 1) {
-        	return "회원정보가 일치하지 않습니다.";
-        }
-        
-        //업데이트된 비밀번호 검색
-        memberDao.getPassword(memberFindInfo);
-        return password.toString();
+        int result = memberDao.updatePassword(memberFindInfo.getMemberId(), encodedPw.toString(), memberFindInfo.getEmail(), memberFindInfo.getPhone());
+        if(result == 1) {
+        	return password.toString();
+        } else {
+			return "회원정보가 일치하지 않습니다.";
+		}
     }
 
 	@Override
