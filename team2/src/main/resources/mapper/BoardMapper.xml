@@ -49,5 +49,101 @@
 		DELETE REPLY
 		WHERE REPLY_ID=#{replyId}
 	</delete>
+	
+	<resultMap id="boardResultMap" type="com.team2.board.model.BoardVO">
+    	<id column="BOARD_ID" property="boardId"/>
+    	<result column="TEAM_ID" property="teamId"/>
+    	<result column="TITLE" property="title"/>
+    	<result column="CONTENT" property="content"/>
+    	<result column="WRITE_DATE" property="writeDate"/>
+    	<result column="UPDATE_DATE" property="updateDate"/>
+    	<result column="READ_NUM" property="readNum"/>
+    	<result column="MEMBER_ID" property="memberId"/>
+  	</resultMap>
+
+	<select id="getBoardList" resultMap="boardResultMap">
+		WITH PAGINATED_BOARD AS (
+		  SELECT 
+		    BOARD_ID, 
+		    TEAM_ID, 
+		    TITLE, 
+		    CONTENT, 
+		    WRITE_DATE, 
+		    UPDATE_DATE, 
+		    READ_NUM, 
+		    MEMBER_ID,
+		    ROW_NUMBER() OVER (ORDER BY BOARD_ID DESC) AS RN
+		  FROM BOARD
+		  where <if test="teamId != -1"> TEAM_ID=#{teamId} </if>
+		)
+		SELECT 
+		  BOARD_ID, 
+		  TEAM_ID, 
+		  TITLE, 
+		  CONTENT, 
+		  WRITE_DATE, 
+		  UPDATE_DATE, 
+		  READ_NUM, 
+		  MEMBER_ID
+		FROM PAGINATED_BOARD
+		WHERE RN BETWEEN #{start} AND #{end}
+	</select>
+	
+	<select id="getBoardListSearch" resultMap="boardResultMap">
+		WITH PAGINATED_BOARD AS (
+		  SELECT 
+		    BOARD_ID, 
+		    TEAM_ID, 
+		    TITLE, 
+		    CONTENT, 
+		    WRITE_DATE, 
+		    UPDATE_DATE, 
+		    READ_NUM, 
+		    MEMBER_ID,
+		    ROW_NUMBER() OVER (ORDER BY BOARD_ID DESC) AS RN
+		  FROM BOARD
+	    	WHERE TITLE LIKE '%' || #{title} || '%' and CONTENT LIKE '%' || #{content} || '%' and MEMBER_ID LIKE '%' || #{memberId} || '%'
+		)
+		SELECT 
+		  BOARD_ID, 
+		  TEAM_ID, 
+		  TITLE, 
+		  CONTENT, 
+		  WRITE_DATE, 
+		  UPDATE_DATE, 
+		  READ_NUM, 
+		  MEMBER_ID
+		FROM PAGINATED_BOARD
+		WHERE RN BETWEEN #{start} AND #{end}
+	</select>
+	
+	
+	<select id="maxBoardId" resultType="int"> 
+		SELECT MAX(BOARD_ID) FROM BOARD
+	</select>
+	<select id="maxReplyId" resultType="int"> 
+		SELECT MAX(Reply_ID) FROM REPLY
+	</select>
+	
+	<select id="getBoardInfo" parameterType="int" resultType="com.team2.board.model.BoardVO">
+		SELECT 
+		  BOARD_ID as "boardId",
+		  TEAM_ID as "teamId", 
+		  TITLE as "title",
+		  CONTENT as "content",
+		  WRITE_DATE as "writeDate",
+		  UPDATE_DATE as "updateDate",
+		  READ_NUM as "readNum",
+		  MEMBER_ID as "memberId"
+		FROM BOARD
+		Where BOARD_ID=#{boardId}
+	</select>
+	
+	<insert id="createBoardTeam" parameterType="int">
+		INSERT INTO BOARD_TEAM
+		(TEAM_ID)
+		VALUES
+		(#{teamId})
+	</insert>
 	 
 </mapper>

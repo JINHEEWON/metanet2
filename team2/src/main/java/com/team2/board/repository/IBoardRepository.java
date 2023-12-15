@@ -21,4 +21,28 @@ public interface IBoardRepository {
 	public void createReply(ReplyVO reply);
 	public void updateReply(ReplyVO reply);
 	public void deleteReply(@Param("replyId") int replyId);
+	
+	public List<BoardVO> getBoardList(
+		@Param("teamId") int teamId,
+		@Param("start") int start,
+		@Param("end") int end,
+		@Param("order_by") String order_by
+	); 
+	
+	public List<BoardVO> getBoardListSearch(
+		@Param("title") String title,
+		@Param("content") String content,
+		@Param("memberId") String memberId,
+		@Param("start") int start,
+		@Param("end") int end,
+		@Param("order_by") String order_by
+	);
+	
+	public void createBoardTeam(@Param("teamId") int teamId);
+	
+	public int maxBoardId();
+	public int maxReplyId();
+	
+	public BoardVO getBoardInfo(@Param("boardId") int boardId);
+
 }
