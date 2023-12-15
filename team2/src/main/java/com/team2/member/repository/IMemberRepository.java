@@ -22,6 +22,6 @@ public interface IMemberRepository {
    boolean checkEmail(Email email);
    boolean checkMemberId(MemberId memberId);
    String getId(@Param("email") String eamil, @Param("phone") String phone);
-   String getPassword(MemberFindInfo memberFindInfo);
+   String getPassword(String memberId);
    int updatePassword(@Param("memberId") String memberId, @Param("password") String password, @Param("email") String eamil, @Param("phone") String phone);
 }

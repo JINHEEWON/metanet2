@@ -67,7 +67,7 @@
          password   
       FROM 
          member 
-      WHERE member_id=#{memberId} AND email=#{email} AND phone=#{phone}
+      WHERE member_id=#{memberId}
    ]]>
    </select>
 
