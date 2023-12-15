@@ -83,7 +83,7 @@
    
    
  <!-- 1이면 true 0이면 false -->
-<select id="checkEmail" parameterType="string" resultType="boolean">
+<select id="checkEmail" parameterType="com.team2.member.model.Member" resultType="boolean">
     <![CDATA[
         SELECT 
             COUNT(*)   
@@ -93,7 +93,30 @@
     ]]>
 </select>
 
-<select id="checkMemberId" parameterType="map" resultType="boolean">
+<select id="checkMemberId" parameterType="com.team2.member.model.Member" resultType="boolean">
+    <![CDATA[
+        SELECT 
+            COUNT(*)   
+        FROM 
+            member 
+        WHERE member_id=#{memberId}
+    ]]>
+</select>
+
+
+
+ <!-- 1이면 true 0이면 false -->
+<select id="checkEmail2" parameterType="string" resultType="boolean">
+    <![CDATA[
+        SELECT 
+            COUNT(*)   
+        FROM 
+            member 
+        WHERE email=#{email}  
+    ]]>
+</select>
+
+<select id="checkMemberId2" parameterType="string" resultType="boolean">
     <![CDATA[
         SELECT 
             COUNT(*)   

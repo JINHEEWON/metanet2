@@ -80,13 +80,23 @@ public class MemberService implements IMemberService {
     }
 
 	@Override
-	public boolean checkEmail(Email email) {
-		return memberDao.checkEmail(email);		
+	public boolean checkEmail(String email) {
+		return memberDao.checkEmail(email);
 	}
 
 	@Override
-	public boolean checkMemberId(MemberId memberId) {
+	public boolean checkMemberId(String memberId) {
 		return memberDao.checkMemberId(memberId);
 	}
+
+	@Override
+    public boolean checkEmail2(String email) {
+        return memberDao.checkEmail2(email);
+    }
+
+    @Override
+    public boolean checkMemberId2(String memberId) {
+        return memberDao.checkMemberId2(memberId);
+    }
 }
 
