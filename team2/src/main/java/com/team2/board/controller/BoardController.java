@@ -33,14 +33,14 @@ public class BoardController {
 	IBoardService boardService;
 	
 	// 게시글 작성 파일 없이 
-	@PostMapping(value="/create") 
+	@PostMapping(value="/create/{teamId}") 
 	public BoardVO createBoard(@RequestBody BoardVO board) {
 		boardService.createBoard(board,boardService.maxBoardId());
 		return board;
 	}
 	
 	// 게시글 작성 파일 같이
-	@PostMapping(value="/create_file") 
+	@PostMapping(value="/create_file/{teamId}") 
 	public BoardVO createBoardWithFile(
 			@RequestPart(value="file", required = false) MultipartFile file, 
 			@RequestPart(value="board") BoardVO board
@@ -70,7 +70,7 @@ public class BoardController {
 	}
 	
 	// 파일만 따로 보낼때
-    @PostMapping("/upload")
+    @PostMapping("/upload/{teamId}")
     public ResponseEntity uploadFile(@RequestPart MultipartFile file) {
         String originalFileName = file.getOriginalFilename();
         File destination = new File("upload/dir" + originalFileName);
@@ -101,7 +101,7 @@ public class BoardController {
 	}
 	
 	// 게시글 삭제 
-	@DeleteMapping("/delete/{boardId}")
+	@DeleteMapping("/delete/{teamId}/{boardId}")
 	public String deleteBoard(@PathVariable int boardId) {
 		try {
 			boardService.deleteBoard(boardId);
