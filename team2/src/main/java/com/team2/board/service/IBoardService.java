@@ -24,6 +24,25 @@ public interface IBoardService {
 		int per_page,
 		String order_by
 	); 
+	
+	public List<BoardVO> getBoardListSearchByTitle(
+		String searchText,
+		int start,
+		int end,
+		String order_by
+	);
+	
+	public List<BoardVO> getBoardListSearch(
+		String title,
+		String content,
+		String memberId,
+		int start,
+		int end,
+		String order_by
+	);
+	
 	public int maxBoardId();
 	public int maxReplyId();
+	
+	public BoardVO getBoardInfo(int boardId);
 }
