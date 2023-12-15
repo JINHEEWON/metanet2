@@ -1,5 +1,6 @@
 package com.team2.board.controller;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,13 +32,15 @@ public class BoardController {
 	
 	@PostMapping(value="/create") 
 	public BoardVO testing(@RequestBody BoardVO board) {
-		System.out.println(board);
+		board.setWriteDate(currentTime());
+		board.setUpdateDate(currentTime());
 		boardService.createBoard(board,boardService.maxBoardId());
 		return board;
 	}
 
 	@PostMapping(value="/createReply") 
 	public ReplyVO test2(@RequestBody ReplyVO reply) {
+		reply.setWriteDate(currentTime());
 		boardService.createReply(reply, boardService.maxReplyId());
 		return reply;
 	}
@@ -66,6 +69,7 @@ public class BoardController {
 
 	@PutMapping("/update/{boardId}")
 	public BoardVO putMethodName(@PathVariable int boardId, @RequestBody BoardVO board) {
+		board.setUpdateDate(currentTime());
 		boardService.updateBoard(board);
 		return board;
 	}
@@ -131,4 +135,26 @@ public class BoardController {
         }
         return boards;
     }
+    
+    @GetMapping("/{boardId}")
+    public BoardVO getBoardInfo(@PathVariable int boardId) {
+    	try {
+        	BoardVO board = boardService.getBoardInfo(boardId);
+    		board.setReadNum(board.getReadNum()+1);
+    		boardService.updateBoard(board);
+    		return board;
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    		return null;
+    	}
+    }
+    
+	private Date currentTime() {
+        // 현재 날짜와 시간 얻기
+        java.util.Date currentDate = new java.util.Date();
+        // java.util.Date를 java.sql.Date로 변환
+        Date sqlDate = new Date(currentDate.getTime());
+        return sqlDate;
+	}
+
 }

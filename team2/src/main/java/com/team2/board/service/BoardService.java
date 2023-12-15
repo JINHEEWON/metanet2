@@ -79,5 +79,10 @@ public class BoardService implements IBoardService {
 	public int maxReplyId() {
 		return boardRepository.maxReplyId();
 	}
+	
+	@Override
+	public BoardVO getBoardInfo(int boardId) {
+		return boardRepository.getBoardInfo(boardId);
+	}
 
 }

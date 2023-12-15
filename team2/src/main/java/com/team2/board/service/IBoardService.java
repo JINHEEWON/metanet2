@@ -26,4 +26,6 @@ public interface IBoardService {
 	); 
 	public int maxBoardId();
 	public int maxReplyId();
+	
+	public BoardVO getBoardInfo(int boardId);
 }

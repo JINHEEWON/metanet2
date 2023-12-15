@@ -30,4 +30,6 @@ public interface IBoardRepository {
 	); 
 	public int maxBoardId();
 	public int maxReplyId();
+	
+	public BoardVO getBoardInfo(@Param("boardId") int boardId);
 }
