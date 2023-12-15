@@ -15,5 +15,6 @@ public interface IMemberService {
     boolean checkEmail(Email email);
     boolean checkMemberId(MemberId memberId);
     String getId(MemberFindInfo memberFindInfo);
+    String getPassword(String memberId);
     String updatePassword(MemberFindInfo memberFindInfo);
 }

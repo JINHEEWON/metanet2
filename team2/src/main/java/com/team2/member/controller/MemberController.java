@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -87,35 +89,44 @@ public class MemberController {
 		return "member/login";
 	}
 
-   // selectMember 회원정보 검색(마이페이지)
+   //회원정보 검색(마이페이지)
    @GetMapping(value="/mypage/{memberId}")
    public Member selectMemberInfo(@PathVariable String memberId) {
 	   Member member =  memberService.selectMember(memberId);
 	   return member;
    }
 		
-   // updateMember
+   //회원정보 수정
 	@PutMapping("/update")
 	public Member updateMemberInfo(@RequestBody Member member) {
+		if(!member.getPassword().equals(member.getPassword2())) {
+			return null;
+		}
+		//password 암호화
+		PasswordEncoder pwEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		String encodedPw = pwEncoder.encode(member.getPassword());
+		member.setPassword(encodedPw);
+		
 		memberService.updateMember(member);
 		Member resultMember = memberService.selectMember(member.getMemberId());
 		return resultMember;
 	}
 	
-   // deleteMember
+   //회원 탈퇴
 	@DeleteMapping("/delete")
 	public String deleteMemberInfo(@RequestBody MemberDelete memberDelete) {
-		int result = memberService.deleteMember(memberDelete);
-		String message = "";
-		if(result != 1) {
-			message = "비밀번호를 다시 확인해주세요";
-		} else {
-			message = memberDelete.getMemberId()+" 회원정보 삭제";
+		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		String dbpw = memberService.getPassword(memberDelete.getMemberId());
+		if(memberDelete.getPassword() != null && passwordEncoder.matches(memberDelete.getPassword(), dbpw)) {
+			memberDelete.setPassword(dbpw);
+			memberService.deleteMember(memberDelete);
+			return memberDelete.getMemberId()+" 회원정보 삭제";
+		}else {
+			return "비밀번호를 다시 확인해주세요";
 		}
-		return message;
 	}
 	
-   // selectid(아이디찾기)
+   // 아이디찾기
 	@PostMapping("/find/username")
 	public String findUsername(@RequestBody MemberFindInfo memberFindInfo) {
 		String memberId = memberService.getId(memberFindInfo);;
@@ -125,7 +136,7 @@ public class MemberController {
 		return memberId;
 	}
 	
-	// selectpassword(비밀번호 찾기 - 새로운 비밀번호 발급 후 리턴)
+	// 비밀번호 찾기(새로운 비밀번호 발급 후 리턴)
 	@PostMapping("/find/password")
 	public String findPassword(@RequestBody MemberFindInfo memberFindInfo) {
 		return memberService.updatePassword(memberFindInfo);
