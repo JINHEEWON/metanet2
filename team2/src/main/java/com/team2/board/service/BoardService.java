@@ -1,6 +1,7 @@
 package com.team2.board.service;
 
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ public class BoardService implements IBoardService {
 
 	@Override
 	public void createBoard(BoardVO board, int maxId) {
+		board.setWriteDate(currentTime());
+		board.setUpdateDate(currentTime());
 		board.setBoardId(maxId+1);
 		boardRepository.createBoard(board);
 	}
@@ -38,6 +41,7 @@ public class BoardService implements IBoardService {
 
 	@Override
 	public void updateBoard(BoardVO board) {
+		board.setUpdateDate(currentTime());
 		boardRepository.updateBoard(board);
 	}
 
@@ -48,6 +52,7 @@ public class BoardService implements IBoardService {
 
 	@Override
 	public void createReply(ReplyVO reply, int maxId) {
+		reply.setWriteDate(currentTime());
 		reply.setReplyId(maxId+1);
 		boardRepository.createReply(reply);
 	}
@@ -97,4 +102,12 @@ public class BoardService implements IBoardService {
 		boardRepository.createBoardTeam(teamId);
 	}
 
+	
+	private Date currentTime() {
+        // 현재 날짜와 시간 얻기
+        java.util.Date currentDate = new java.util.Date();
+        // java.util.Date를 java.sql.Date로 변환
+        Date sqlDate = new Date(currentDate.getTime());
+        return sqlDate;
+	}
 }
