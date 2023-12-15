@@ -20,14 +20,14 @@ public class ReplyController {
 	IBoardService boardService;
 	
 	// 댓글 작성 
-	@PostMapping(value="/create") 
+	@PostMapping(value="/create/{teamId}") 
 	public ReplyVO createReply(@RequestBody ReplyVO reply) {
 		boardService.createReply(reply, boardService.maxReplyId());
 		return reply;
 	}
 	
 	// 댓글 삭제 
-	@DeleteMapping("/delete/{replyId}")
+	@DeleteMapping("/delete/{teamId}/{replyId}")
 	public String deleteReply(@PathVariable int replyId) {
 		try {
 			boardService.deleteReply(replyId);
@@ -39,7 +39,7 @@ public class ReplyController {
 	}
 	
 	// 댓글 수정 
-	@PutMapping("/update")
+	@PutMapping("/update/{teamId}")
 	public ReplyVO updateReply(@RequestBody ReplyVO reply) {
 		boardService.updateReply(reply);
 		return reply;
