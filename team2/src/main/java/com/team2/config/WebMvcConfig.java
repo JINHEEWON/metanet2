@@ -18,7 +18,13 @@ import com.team2.common.filter.LoginInterceptor;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
-
+	
+//    @Bean
+//    public MultipartResolver multipartResolver() {
+//        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+//        resolver.setMaxUploadSize(5242880); // 최대 업로드 크기 설정 (여기서는 5MB로 설정)
+//        return resolver;
+//    }
 	
 	@Bean
 	public LocaleResolver localeResolver() {

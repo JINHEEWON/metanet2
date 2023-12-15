@@ -1,5 +1,7 @@
 package com.team2.board.repository;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -21,11 +23,31 @@ public interface IBoardRepository {
 	public void updateReply(ReplyVO reply);
 	public void deleteReply(@Param("replyId") int replyId);
 	
-	public int maxBoardId();
-	public int MaxFileId();
-	
 	void insertFileData(BoardUploadFile file);
 	BoardUploadFile getFile(int fileId);
+
+	public List<BoardVO> getBoardList(
+		@Param("teamId") int teamId,
+		@Param("start") int start,
+		@Param("end") int end,
+		@Param("order_by") String order_by
+	); 
 	
+	public List<BoardVO> getBoardListSearch(
+		@Param("title") String title,
+		@Param("content") String content,
+		@Param("memberId") String memberId,
+		@Param("start") int start,
+		@Param("end") int end,
+		@Param("order_by") String order_by
+	);
+	
+	public void createBoardTeam(@Param("teamId") int teamId);
+	
+	public int maxBoardId();
+	public int maxReplyId();
+	public int maxFileId();
+	
+	public BoardVO getBoardInfo(@Param("boardId") int boardId);
 
 }

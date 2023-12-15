@@ -7,6 +7,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class MemberId {
-	private String memberId;
+public class MemberDelete {
+    private String memberId;
+    private String password;
 }
