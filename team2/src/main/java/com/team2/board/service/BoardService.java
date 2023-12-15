@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.team2.board.model.BoardUploadFile;
 import com.team2.board.model.BoardVO;
 import com.team2.board.model.ReplyVO;
 import com.team2.board.repository.IBoardRepository;
@@ -17,7 +18,11 @@ public class BoardService implements IBoardService {
 	@Autowired
 	IBoardRepository boardRepository;
 
-	@Override
+//	@Override
+//	public void createBoard(BoardVO board) {
+//		System.out.println(board);
+//		board.setBoardId(boardRepository.maxBoardId()+1);
+		
 	public void createBoard(BoardVO board, int maxId) {
 		board.setWriteDate(currentTime());
 		board.setUpdateDate(currentTime());
@@ -25,19 +30,23 @@ public class BoardService implements IBoardService {
 		boardRepository.createBoard(board);
 	}
 	
-//	public void createBoard(BoardVO board, int maxId) {
-//	    // MyBatis나 JDBC를 사용하여 데이터베이스 연결 및 SQL 실행하는 코드
-//	    try(SqlSession sqlSession = sqlSessionFactory.openSession()) {
-//	        // MyBatis의 Mapper를 사용하여 SQL 실행
-//	        BoardMapper boardMapper = sqlSession.getMapper(BoardMapper.class);
-//	        
-//	        // board 객체와 maxId 값을 매개변수로 전달하여 SQL 실행
-//	        boardMapper.createBoard(board, maxId);
-//	        
-//	        sqlSession.commit(); // 변경사항 커밋
-//	    }
-//	}
-
+	@Override
+	public void createBoard(BoardVO board, BoardUploadFile file) {
+		System.out.println(board);
+		board.setBoardId(boardRepository.maxBoardId()+1);
+		boardRepository.createBoard(board);
+		if(file != null && file.getFileName() != null && !file.getFileName().equals("")) {
+        	file.setBoardId(board.getBoardId());
+        	file.setFileId(boardRepository.maxFileId()+1);
+        	boardRepository.insertFileData(file);
+        }
+	}
+	
+	@Override
+	public BoardUploadFile getFile(int fileId) {
+		return boardRepository.getFile(fileId);
+	}
+	
 
 	@Override
 	public void updateBoard(BoardVO board) {
@@ -101,7 +110,6 @@ public class BoardService implements IBoardService {
 	public void createBoardTeam(int teamId) {
 		boardRepository.createBoardTeam(teamId);
 	}
-
 	
 	private Date currentTime() {
         // 현재 날짜와 시간 얻기

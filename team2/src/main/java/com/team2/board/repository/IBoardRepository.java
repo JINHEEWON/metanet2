@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import com.team2.board.model.BoardUploadFile;
 import com.team2.board.model.BoardVO;
 import com.team2.board.model.ReplyVO;
 
@@ -22,6 +23,9 @@ public interface IBoardRepository {
 	public void updateReply(ReplyVO reply);
 	public void deleteReply(@Param("replyId") int replyId);
 	
+	void insertFileData(BoardUploadFile file);
+	BoardUploadFile getFile(int fileId);
+
 	public List<BoardVO> getBoardList(
 		@Param("teamId") int teamId,
 		@Param("start") int start,
@@ -42,6 +46,7 @@ public interface IBoardRepository {
 	
 	public int maxBoardId();
 	public int maxReplyId();
+	public int maxFileId();
 	
 	public BoardVO getBoardInfo(@Param("boardId") int boardId);
 

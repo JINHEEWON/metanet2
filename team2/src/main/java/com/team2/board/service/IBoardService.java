@@ -1,16 +1,17 @@
 package com.team2.board.service;
 
+import com.team2.board.model.BoardUploadFile;
 import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
-import com.team2.board.model.Board;
 import com.team2.board.model.BoardVO;
 import com.team2.board.model.ReplyVO;
 
 
 public interface IBoardService {
-	public void createBoard(BoardVO board, int maxId);
+	public void createBoard(BoardVO board, int id);
+	public void createBoard(BoardVO board, BoardUploadFile file);
+	
+	BoardUploadFile getFile(int fileId);
+	
 	public void updateBoard(BoardVO board);
 	public void deleteBoard(int boardId);
 	
