@@ -22,18 +22,42 @@ public class SecurityConfig {
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		System.out.println("securityfilterchain");
+//		 http
+//         .csrf().disable()
+//         .httpBasic()
+//             .and()
+//         .authorizeRequests()
+//             .antMatchers("/public/**").permitAll()
+//             .anyRequest().authenticated();
+		
+		
+//		 http
+//         .csrf().disable()
+//         .httpBasic()
+//             .and()
+//         .authorizeRequests()
+//             .requestMatchers("/public/**").permitAll()
+//             .anyRequest().authenticated()
+//             .and()
+//         .formLogin()
+//             .loginProcessingUrl("/memer/login")  // 로그인 처리 URL
+//             .usernameParameter("username")  // JSON 요청에서 사용자명을 어떤 필드로 보낼지 설정
+//             .passwordParameter("password")  // JSON 요청에서 비밀번호를 어떤 필드로 보낼지 설정
+//             .permitAll();  // 로그인 페이지 접근 권한 설정
+		 
 		http.csrf().disable();
 		http.formLogin((formLogin) -> formLogin
 				.loginPage("/member/login")
-				.usernameParameter("userid")
-				.defaultSuccessUrl("/"))
+				.usernameParameter("memberId")
+				.defaultSuccessUrl("/member/success"))
 			.logout((logout) -> logout
 				.logoutUrl("/member/logout")
 				.logoutSuccessUrl("/member/login")
 				.invalidateHttpSession(true));
 		http.authorizeHttpRequests()
 			.requestMatchers("/file/**").hasRole("ADMIN")
-			//.requestMatchers("/board/**").hasAnyRole("USER","ADMIN")
+			.requestMatchers("/board/**").hasAnyRole("USER","ADMIN")
 			.requestMatchers("/**","/css/**","/js/**","/images/**").permitAll()
 			.requestMatchers("/member/insert","/member/login").permitAll();
 		return http.build();

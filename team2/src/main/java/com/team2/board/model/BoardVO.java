@@ -21,8 +21,8 @@ public class BoardVO {
 	int readNum;
 	String memberId;
 	
-	private MultipartFile file;
-	private int fileId;
+//	private MultipartFile file;
+//	private int fileId;
 	private String fileName;
 	private long fileSize;
 	private String fileContentType;

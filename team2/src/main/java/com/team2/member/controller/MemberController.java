@@ -99,9 +99,10 @@ public class MemberController {
 	}
 
 	// login
-	@GetMapping(value = "/login")
-	public String login() {
-		return "member/login";
+	@GetMapping(value = "/success")
+	@ResponseBody
+	public ResponseEntity<String> login() {
+		return ResponseEntity.ok("성공");
 	}
 
    //회원정보 검색(마이페이지)
