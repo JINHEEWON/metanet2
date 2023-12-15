@@ -103,5 +103,28 @@
         WHERE member_id=#{memberId}
     ]]>
 </select>
+
+
+
+ <!-- 1이면 true 0이면 false -->
+<select id="checkEmail2" parameterType="string" resultType="boolean">
+    <![CDATA[
+        SELECT 
+            COUNT(*)   
+        FROM 
+            member 
+        WHERE email=#{email}  
+    ]]>
+</select>
+
+<select id="checkMemberId2" parameterType="string" resultType="boolean">
+    <![CDATA[
+        SELECT 
+            COUNT(*)   
+        FROM 
+            member 
+        WHERE member_id=#{memberId}
+    ]]>
+</select>
  
  </mapper>

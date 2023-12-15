@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.team2.member.model.Email;
 import com.team2.member.model.Member;
+import com.team2.member.model.MemberId;
 import com.team2.member.service.IMemberService;
 import jakarta.servlet.http.HttpSession;
 
@@ -29,6 +32,32 @@ public class MemberController {
 
 //	@Autowired
 //	MemberValidator memberValidator;
+
+	// 중복 이메일 확인
+	@PostMapping("/checkEmail")
+	@ResponseBody
+	public ResponseEntity<String> checkEmail2(@RequestBody Email email) {
+		boolean emailAvailable = !memberService.checkEmail(email.getEmail());
+
+		if (emailAvailable) {
+			return ResponseEntity.ok("사용 가능한 이메일입니다.");
+		} else {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("중복된 이메일입니다.");
+		}
+	}
+
+	// 중복 아이디 확인
+	@PostMapping("/checkMemberId")
+	@ResponseBody
+	public ResponseEntity<String> checkMemberId2(@RequestBody MemberId memberId) {
+		boolean memberIdAvailable = !memberService.checkMemberId(memberId.getMemberId());
+
+		if (memberIdAvailable) {
+			return ResponseEntity.ok("사용 가능한 아이디입니다.");
+		} else {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("중복된 아이디입니다.");
+		}
+	}
 
 	// 회원가입
 	@PostMapping("/signup")

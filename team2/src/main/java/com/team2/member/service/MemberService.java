@@ -55,5 +55,15 @@ public class MemberService implements IMemberService {
 	public boolean checkMemberId(String memberId) {
 		return memberDao.checkMemberId(memberId);
 	}
+
+	@Override
+    public boolean checkEmail2(String email) {
+        return memberDao.checkEmail2(email);
+    }
+
+    @Override
+    public boolean checkMemberId2(String memberId) {
+        return memberDao.checkMemberId2(memberId);
+    }
 }
 

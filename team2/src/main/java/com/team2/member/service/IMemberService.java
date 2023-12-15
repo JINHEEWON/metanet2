@@ -11,6 +11,8 @@ public interface IMemberService {
     void deleteMember(Member member);
     boolean checkEmail(@Param("email") String email);
     boolean checkMemberId(@Param("memberId") String memberId);
+    boolean checkEmail2(String email);
+    boolean checkMemberId2(String memberId);
     String getId(@Param("email") String eamil, @Param("phone") String phone);
     String updatePassword(@Param("memberId") String memberId, @Param("password") String password, @Param("email") String eamil, @Param("phone") String phone);
 }
