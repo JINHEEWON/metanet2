@@ -22,7 +22,10 @@ public interface IBoardRepository {
 	public void deleteReply(@Param("replyId") int replyId);
 	
 	public int maxBoardId();
+	public int MaxFileId();
 	
-
+	void insertFileData(BoardUploadFile file);
+	BoardUploadFile getFile(int fileId);
+	
 
 }

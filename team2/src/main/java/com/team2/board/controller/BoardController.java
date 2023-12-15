@@ -23,11 +23,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.PutMapping;
-
 
 
 @RestController
@@ -37,35 +37,39 @@ public class BoardController {
 	@Autowired
 	IBoardService boardService;
 	
-	@PostMapping(value="/create") 
-	public BoardVO testing(@RequestBody BoardVO board) {
-		System.out.println(board);
-		boardService.createBoard(board,boardService.maxBoardId());
-		return board;
-	}
+//	@PostMapping(value="/create") 
+//	public BoardVO testing(@RequestBody BoardVO board) {
+//		System.out.println(board);
+//		boardService.createBoard(board);
+//		return board;
+//	}
 	
-	@PostMapping(value="/file/write") 
-	public BoardUploadFile writeFile(@RequestBody BoardVO board) {
+	@PostMapping(value="/create") 
+	public BoardVO testing(@RequestParam BoardVO board) {
 		System.out.println(board);
-		String msg= "filewsuccess";
-		BoardUploadFile file = new BoardUploadFile();
+		boardService.createBoard(board);
+//		if(csrfToken==null || "".equals(csrfToken)) {
+//			throw new RuntimeException("CSRF 토큰이 없습니다.");
+//		}else if(!csrfToken.equals(session.getAttribute("csrfToken"))) {
+//			throw new RuntimeException("잘 못된 접근이 감지되었습니다.");
+//		}
 		try{
-			
-			MultipartFile mfile = board.getFile();
-			if(mfile!=null && !mfile.isEmpty()) {
-				file.setFileName(mfile.getOriginalFilename());
-				file.setFileSize(mfile.getSize());
-				file.setFileContentType(mfile.getContentType());
-				file.setFileData(mfile.getBytes());
-				boardService.writeFile(board, file);
+			MultipartFile file = board.getFile();
+			if(file!=null && !file.isEmpty()) {
+				BoardUploadFile newfile = new BoardUploadFile();
+				newfile.setFileName(file.getOriginalFilename());
+				newfile.setFileSize(file.getSize());
+				newfile.setFileContentType(file.getContentType());
+				newfile.setFileData(file.getBytes());
+				boardService.createBoard(board, newfile);
 			}else {
-				boardService.createBoard(board,boardService.maxBoardId());
+				boardService.createBoard(board);
 			}
 		}catch(Exception e){
 			e.printStackTrace();
-			msg = "fail";
 		}
-		return file;
+		
+		return new BoardVO();
 	}
 	
 	@GetMapping("/file/{fileId}")
