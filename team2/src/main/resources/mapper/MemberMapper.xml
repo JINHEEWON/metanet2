@@ -4,7 +4,8 @@
 
 <mapper namespace="com.team2.member.repository.IMemberRepository">
 
-<select id="selectMember" parameterType="string" resultType="com.team2.member.model.Member">
+	<select id="selectMember" parameterType="string"
+		resultType="com.team2.member.model.Member">
 <![CDATA[
       SELECT 
          member_id AS memberId,
@@ -18,19 +19,21 @@
          member 
       WHERE member_id=#{memberId}
    ]]>
-   </select>
+	</select>
 
-<insert id="insertMember" parameterType="com.team2.member.model.Member">
+	<insert id="insertMember"
+		parameterType="com.team2.member.model.Member">
    <![CDATA[
       INSERT INTO 
          member (member_id, name, password, email, phone, birth, team_id) 
       VALUES 
          (#{memberId}, #{name}, #{password}, #{email}, #{phone}, #{birth}, #{teamId})
    ]]>
-   </insert>
+	</insert>
 
 
-<update id="updateMember" parameterType="com.team2.member.model.Member">
+	<update id="updateMember"
+		parameterType="com.team2.member.model.Member">
    <![CDATA[
       UPDATE MEMBER
       SET 
@@ -38,20 +41,21 @@
       WHERE 
          member_id=#{memberId}
    ]]>
-   </update>
+	</update>
 
-<delete id="deleteMember" parameterType="com.team2.member.model.MemberDelete">
+	<delete id="deleteMember"
+		parameterType="com.team2.member.model.MemberDelete">
    <![CDATA[
       DELETE FROM
          member 
       WHERE
          member_id=#{memberId} AND password=#{password}
    ]]>
-   </delete>
+	</delete>
 
 
 
-<select id="getId" resultType="string">
+	<select id="getId" resultType="string">
 <![CDATA[
       SELECT 
          member_id   
@@ -59,9 +63,11 @@
          member 
       WHERE email=#{email} AND phone=#{phone}
    ]]>
-   </select>
+	</select>
 
-<select id="getPassword" parameterType="com.team2.member.model.MemberFindInfo" resultType="string">
+	<select id="getPassword"
+		parameterType="com.team2.member.model.MemberFindInfo"
+		resultType="string">
 <![CDATA[
       SELECT 
          password   
@@ -69,9 +75,9 @@
          member 
       WHERE member_id=#{memberId}
    ]]>
-   </select>
+	</select>
 
-<update id="updatePassword">
+	<update id="updatePassword">
    <![CDATA[
       UPDATE MEMBER
       SET 
@@ -79,11 +85,12 @@
       WHERE 
          member_id=#{memberId} AND email=#{email} AND phone=#{phone}
    ]]>
-   </update>
-   
-   
- <!-- 1이면 true 0이면 false -->
-<select id="checkEmail" parameterType="com.team2.member.model.Member" resultType="boolean">
+	</update>
+
+
+	<!-- 1이면 true 0이면 false -->
+	<select id="checkEmail"
+		parameterType="com.team2.member.model.Member" resultType="boolean">
     <![CDATA[
         SELECT 
             COUNT(*)   
@@ -91,9 +98,10 @@
             member 
         WHERE email=#{email}  
     ]]>
-</select>
+	</select>
 
-<select id="checkMemberId" parameterType="com.team2.member.model.Member" resultType="boolean">
+	<select id="checkMemberId"
+		parameterType="com.team2.member.model.Member" resultType="boolean">
     <![CDATA[
         SELECT 
             COUNT(*)   
@@ -101,12 +109,13 @@
             member 
         WHERE member_id=#{memberId}
     ]]>
-</select>
+	</select>
 
 
 
- <!-- 1이면 true 0이면 false -->
-<select id="checkEmail2" parameterType="string" resultType="boolean">
+	<!-- 1이면 true 0이면 false -->
+	<select id="checkEmail2" parameterType="string"
+		resultType="boolean">
     <![CDATA[
         SELECT 
             COUNT(*)   
@@ -114,9 +123,10 @@
             member 
         WHERE email=#{email}  
     ]]>
-</select>
+	</select>
 
-<select id="checkMemberId2" parameterType="string" resultType="boolean">
+	<select id="checkMemberId2" parameterType="string"
+		resultType="boolean">
     <![CDATA[
         SELECT 
             COUNT(*)   
@@ -124,6 +134,27 @@
             member 
         WHERE member_id=#{memberId}
     ]]>
-</select>
- 
- </mapper>
+	</select>
+
+	<!-- 로그인을 위한 select 문 추가 -->
+	<select id="loginMember"
+		parameterType="com.team2.member.model.Login" resultType="Member">
+    <![CDATA[
+        SELECT 
+            member_id AS memberId,
+            name AS name,
+            password AS password,
+            email AS email,
+            phone AS phone,
+            birth AS birth,
+            team_id AS teamId
+        FROM 
+            member 
+        WHERE 
+            member_id = #{memberId} AND password = #{password}
+    ]]>
+	</select>
+
+
+
+</mapper>

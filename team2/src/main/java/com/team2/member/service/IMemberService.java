@@ -4,6 +4,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import com.team2.member.model.Member;
 import com.team2.member.model.Email;
+import com.team2.member.model.Login;
 import com.team2.member.model.Member;
 import com.team2.member.model.MemberDelete;
 import com.team2.member.model.MemberFindInfo;
@@ -11,6 +12,7 @@ import com.team2.member.model.MemberId;
 
 public interface IMemberService {
     Member selectMember(String memberId);
+    Member loginMember(Login login);
     void insertMember(Member member) ;
     void updateMember(Member member);
     boolean checkEmail(@Param("email") String email);
