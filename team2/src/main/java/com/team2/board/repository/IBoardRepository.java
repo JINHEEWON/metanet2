@@ -28,6 +28,25 @@ public interface IBoardRepository {
 		@Param("end") int end,
 		@Param("order_by") String order_by
 	); 
+	
+	public List<BoardVO> getBoardListSearchByTitle(
+		@Param("searchText") String searchText,
+		@Param("start") int start,
+		@Param("end") int end,
+		@Param("order_by") String order_by
+	);
+	
+	public List<BoardVO> getBoardListSearch(
+		@Param("title") String title,
+		@Param("content") String content,
+		@Param("memberId") String memberId,
+		@Param("start") int start,
+		@Param("end") int end,
+		@Param("order_by") String order_by
+	);
+	
 	public int maxBoardId();
 	public int maxReplyId();
+	
+	public BoardVO getBoardInfo(@Param("boardId") int boardId);
 }
