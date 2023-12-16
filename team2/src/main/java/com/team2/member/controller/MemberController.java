@@ -1,5 +1,6 @@
 package com.team2.member.controller;
 
+import java.security.Principal;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -168,5 +169,14 @@ public class MemberController {
 	@PostMapping("/find/password")
 	public String findPassword(@RequestBody MemberFindInfo memberFindInfo) {
 		return memberService.updatePassword(memberFindInfo);
+	}
+	
+	@GetMapping("/info")
+	public String currentInfo(Principal principal) {
+		String memberId = principal.getName();
+		if (memberId==null) {
+			return "로그인 안 된 상태입니다";
+		}
+		return "로그인 정보 \n" + memberService.selectMember(memberId);
 	}
 }
