@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,15 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.team2.board.model.BoardUploadFile;
 import com.team2.board.model.BoardVO;
 import com.team2.board.service.IBoardService;
+import com.team2.member.model.Member;
+import com.team2.member.model.MemberUserDetails;
+import com.team2.member.service.IMemberService;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,10 +38,17 @@ public class BoardController {
 
 	@Autowired
 	IBoardService boardService;
+	@Autowired
+	IMemberService memberService;
 	
 	// 게시글 작성 파일 없이 
 	@PostMapping(value="/create/{teamId}") 
-	public BoardVO createBoard(@RequestBody BoardVO board) {
+	public BoardVO createBoard(@RequestBody BoardVO board, @PathVariable String teamId, Principal principal) {
+		Member member = memberService.selectMember(principal.getName());
+		if(!teamId.equals(Integer.toString(member.getTeamId()))) {
+			return null; 
+		}
+		System.out.println(teamId);
 		boardService.createBoard(board,boardService.maxBoardId());
 		return board;
 	}
@@ -43,8 +57,13 @@ public class BoardController {
 	@PostMapping(value="/create_file/{teamId}") 
 	public BoardVO createBoardWithFile(
 			@RequestPart(value="file", required = false) MultipartFile file, 
-			@RequestPart(value="board") BoardVO board
+			@RequestPart(value="board") BoardVO board,
+			@PathVariable String teamId, Principal principal
 	) {
+		Member member = memberService.selectMember(principal.getName());
+		if(!teamId.equals(Integer.toString(member.getTeamId()))) {
+			return null; 
+		}
 		try{
 			if(file!=null && !file.isEmpty()) {
 				BoardUploadFile newfile = new BoardUploadFile();
@@ -102,7 +121,11 @@ public class BoardController {
 	
 	// 게시글 삭제 
 	@DeleteMapping("/delete/{teamId}/{boardId}")
-	public String deleteBoard(@PathVariable int boardId) {
+	public String deleteBoard(@PathVariable int boardId, @PathVariable String teamId, Principal principal) {
+		Member member = memberService.selectMember(principal.getName());
+		if(!teamId.equals(Integer.toString(member.getTeamId()))) {
+			return null; 
+		}
 		try {
 			boardService.deleteBoard(boardId);
 		} catch (Exception e) {
@@ -114,7 +137,11 @@ public class BoardController {
 	
 	// 게시글 수정 
 	@PutMapping("/update/{teamId}")
-	public BoardVO putMethodName(@RequestBody BoardVO board) {
+	public BoardVO putMethodName(@RequestBody BoardVO board, @PathVariable String teamId, Principal principal) {
+		Member member = memberService.selectMember(principal.getName());
+		if(!teamId.equals(Integer.toString(member.getTeamId()))) {
+			return null; 
+		}
 		boardService.updateBoard(board);
 		return board;
 	}
