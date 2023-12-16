@@ -34,8 +34,7 @@ public class SecurityConfig { // User와 Admin을 구분하는 용도임
 				.requestMatchers("/member/find/username").authenticated() // 이거로 들어오면 인증이 필요
 				.requestMatchers("/member/find/password").authenticated() // 이거로 들어오면 인증이 필요
 				.requestMatchers("/board/**").hasAnyRole("USER", "ADMIN") // 인증뿐만 아니라 권한이 있는 사람만 들어올 수 있음
-				.requestMatchers("/board/create/**").authenticated()
-				.requestMatchers("/reply/**").authenticated()
+				.requestMatchers("/reply/**").hasAnyRole("USER", "ADMIN")
 				.anyRequest().permitAll(); // 나머지는 전부 인증 없이 접근 가능
 		return http.build();
 	}
