@@ -35,11 +35,13 @@ public class ReplyController {
 	) {
 		String memberId = principal.getName();
 		if (memberId==null) {
+			System.out.println("로그인 필요합니다.");
 			return null;
 		}
 		if (teamId!=1) {
 			Member member = memberService.selectMember(memberId);
 			if (member.getTeamId()!=teamId) {
+				System.out.println("자신이 속한 게시판만 이용하실 수 있습니다.");
 				return null;
 			}
 		}
@@ -87,14 +89,17 @@ public class ReplyController {
 	) {
 		String memberId = principal.getName();
 		if (memberId==null) {
+			System.out.println("로그인 필요합니다.");
 			return null;
 		}
 		if (teamId!=1) {
 			Member member = memberService.selectMember(memberId);
 			if (member.getTeamId()!=teamId) {
+				System.out.println("자신이 속한 게시판만 이용하실 수 있습니다.");
 				return null;
 			}
 			if (reply.getMemberId()!= memberId) {
+				System.out.println("댓글 작성자가 아니여서 수정을 하실 수 없습니다.");
 				return null;
 			}
 		}

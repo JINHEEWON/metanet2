@@ -47,11 +47,13 @@ public class BoardController {
 	) {
 		String memberId = principal.getName();
 		if (memberId==null) {
+			System.out.println("로그인 필요합니다.");
 			return null;
 		}
 		if (teamId!=1) {
 			Member member = memberService.selectMember(memberId);
 			if (member.getTeamId()!=teamId) {
+				System.out.println("자신이 속한 게시판만 이용하실 수 있습니다.");
 				return null;
 			}
 		}
@@ -69,11 +71,13 @@ public class BoardController {
 	) {
 		String memberId = principal.getName();
 		if (memberId==null) {
+			System.out.println("로그인 필요합니다.");
 			return null;
 		}
 		if (teamId!=1) {
 			Member member = memberService.selectMember(memberId);
 			if (member.getTeamId()!=teamId) {
+				System.out.println("자신이 속한 게시판만 이용하실 수 있습니다.");
 				return null;
 			}
 		}
@@ -164,37 +168,45 @@ public class BoardController {
 	
 	// 게시글 수정 
 	@PutMapping("/update/{teamId}")
-	public BoardVO putMethodName(
-		@RequestBody BoardVO board,
-		@PathVariable int teamId,
-		Principal principal
+	public ResponseEntity<BoardVO> putMethodName(
+	    @RequestBody BoardVO board,
+	    @PathVariable int teamId,
+	    Principal principal
 	) {
-		
-		String memberId = principal.getName();
-		if (memberId==null) {
-			return null;
-		}
-		if (teamId!=1) {
-			Member member = memberService.selectMember(memberId);
-			if (member.getTeamId()!=teamId) {
-				return null;
-			}
-			if (board.getMemberId()!= memberId) {
-				return null;
-			}
-		}
-		boardService.updateBoard(board);
-		return board;
+
+	    String memberId = principal.getName();
+	    if (memberId == null) {
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+	    }
+	    if (teamId != 1) {
+	        Member member = memberService.selectMember(memberId);
+	        if (member.getTeamId() != teamId) {
+	            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+	        }
+	        if (!board.getMemberId().equals(memberId)) {
+	            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+	        }
+	    }
+
+	    boardService.updateBoard(board);
+	    return ResponseEntity.ok(board);
 	}
 	
 	
 	// 자유 게시판 조회 
     @GetMapping("/free")
     public List<BoardVO> getFreeBoardList(
-            @RequestParam(name = "teamId", defaultValue = "1") int teamId,
-            @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "per_page", defaultValue = "10") int perPage,
-            @RequestParam(name = "order_by", defaultValue = "default") String orderBy) {
+        @RequestParam(name = "teamId", defaultValue = "1") int teamId,
+        @RequestParam(name = "page", defaultValue = "0") int page,
+        @RequestParam(name = "per_page", defaultValue = "10") int perPage,
+        @RequestParam(name = "order_by", defaultValue = "default") String orderBy,
+        Principal principal
+    ) {
+		String memberId = principal.getName();
+		if (memberId==null) {
+			System.out.println("로그인 필요합니다.");
+			return null;
+		}
 
         List<BoardVO> boards = new ArrayList<>();
         int start = page * perPage;
@@ -214,8 +226,14 @@ public class BoardController {
             @PathVariable int teamId,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "per_page", defaultValue = "10") int perPage,
-            @RequestParam(name = "order_by", defaultValue = "default") String orderBy) {
+            @RequestParam(name = "order_by", defaultValue = "default") String orderBy,
+            Principal principal) {
 
+		String memberId = principal.getName();
+		if (memberId==null) {
+			System.out.println("로그인 필요합니다.");
+			return null;
+		}
         List<BoardVO> boards = new ArrayList<>();
         int start = page * perPage;
         int end = page * perPage + perPage;
@@ -234,8 +252,14 @@ public class BoardController {
             @RequestParam(name = "teamId", defaultValue = "-1") int teamId,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "per_page", defaultValue = "10") int perPage,
-            @RequestParam(name = "order_by", defaultValue = "default") String orderBy
+            @RequestParam(name = "order_by", defaultValue = "default") String orderBy,
+            Principal principal
     ) {
+		String memberId = principal.getName();
+		if (memberId==null) {
+			System.out.println("로그인 필요합니다.");
+			return null;
+		}
         List<BoardVO> boards = new ArrayList<>();
         int start = page * perPage;
         int end = page * perPage + perPage;
@@ -249,7 +273,12 @@ public class BoardController {
     
     // 게시판 조회 
     @GetMapping("/{boardId}")
-    public BoardVO getBoardInfo(@PathVariable int boardId) {
+    public BoardVO getBoardInfo(@PathVariable int boardId, Principal principal) {
+		String memberId = principal.getName();
+		if (memberId==null) {
+			System.out.println("로그인 필요합니다.");
+			return null;
+		}
     	try {
         	BoardVO board = boardService.getBoardInfo(boardId);
     		board.setReadNum(board.getReadNum()+1);
@@ -271,8 +300,14 @@ public class BoardController {
             @RequestParam(name= "memberId", defaultValue = "") String memberId,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "per_page", defaultValue = "10") int perPage,
-            @RequestParam(name = "order_by", defaultValue = "default") String orderBy
+            @RequestParam(name = "order_by", defaultValue = "default") String orderBy,
+            Principal principal
     ) {
+		String currentMemberId = principal.getName();
+		if (currentMemberId==null) {
+			System.out.println("로그인 필요합니다.");
+			return null;
+		}
         List<BoardVO> boards = new ArrayList<>();
     	try {
             int start = page * perPage;
