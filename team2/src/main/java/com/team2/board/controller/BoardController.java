@@ -179,6 +179,9 @@ public class BoardController {
 			if (member.getTeamId()!=teamId) {
 				return null;
 			}
+			if (board.getMemberId()!= memberId) {
+				return null;
+			}
 		}
 		boardService.updateBoard(board);
 		return board;
