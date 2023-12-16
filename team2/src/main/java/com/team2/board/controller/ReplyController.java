@@ -34,10 +34,10 @@ public class ReplyController {
 		Principal principal
 	) {
 		String memberId = principal.getName();
+		if (memberId==null) {
+			return null;
+		}
 		if (teamId!=1) {
-			if (memberId==null) {
-				return null;
-			}
 			Member member = memberService.selectMember(memberId);
 			if (member.getTeamId()!=teamId) {
 				return null;
@@ -59,14 +59,15 @@ public class ReplyController {
 		if (memberId==null) {
 			return "사용하려면 로그인을 해주세요.";
 		}
-		Member member = memberService.selectMember(memberId);
-		ReplyVO reply = boardService.getReplyInfo(replyId);
-		if (member.getTeamId()!=teamId) {
-			return "자신이 속한 게시판만 이용하실 수 있습니다.";
-		}
-		if (memberId!=reply.getMemberId())
-		if (reply.getMemberId()!= memberId) {
-			return "작성자가 아니여서 댓글을 삭제하실 수 없습니다.";
+		if (teamId!=1) {
+			Member member = memberService.selectMember(memberId);
+			ReplyVO reply = boardService.getReplyInfo(replyId);
+			if (member.getTeamId()!=teamId) {
+				return "자신이 속한 게시판만 이용하실 수 있습니다.";
+			}
+			if (reply.getMemberId()!= memberId) {
+				return "작성자가 아니여서 댓글을 삭제하실 수 없습니다.";
+			}
 		}
 		try {
 			boardService.deleteReply(replyId);
@@ -88,13 +89,14 @@ public class ReplyController {
 		if (memberId==null) {
 			return null;
 		}
-		Member member = memberService.selectMember(memberId);
-		if (member.getTeamId()!=teamId) {
-			return null;
-		}
-		if (memberId!=reply.getMemberId())
-		if (reply.getMemberId()!= memberId) {
-			return null;
+		if (teamId!=1) {
+			Member member = memberService.selectMember(memberId);
+			if (member.getTeamId()!=teamId) {
+				return null;
+			}
+			if (reply.getMemberId()!= memberId) {
+				return null;
+			}
 		}
 		boardService.updateReply(reply);
 		return reply;
