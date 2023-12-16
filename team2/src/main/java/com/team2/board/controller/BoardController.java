@@ -153,7 +153,7 @@ public class BoardController {
 				return "자신이 속한 게시판만 이용하실 수 있습니다.";
 			}
 			BoardVO board = boardService.getBoardInfo(boardId);
-			if (board.getMemberId()!= memberId) {
+			if (!board.getMemberId().equals(memberId)) {
 				return "작성자가 아니여서 게시글을 삭제하실 수 없습니다.";
 			}
 		}
@@ -168,30 +168,31 @@ public class BoardController {
 	
 	// 게시글 수정 
 	@PutMapping("/update/{teamId}")
-	public ResponseEntity<BoardVO> putMethodName(
-	    @RequestBody BoardVO board,
-	    @PathVariable int teamId,
-	    Principal principal
+	public BoardVO putMethodName(
+		@RequestBody BoardVO board,
+		@PathVariable int teamId,
+		Principal principal
 	) {
-
-	    String memberId = principal.getName();
-	    if (memberId == null) {
-	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-	    }
-	    if (teamId != 1) {
-	        Member member = memberService.selectMember(memberId);
-	        if (member.getTeamId() != teamId) {
-	            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-	        }
-	        if (!board.getMemberId().equals(memberId)) {
-	            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-	        }
-	    }
-
-	    boardService.updateBoard(board);
-	    return ResponseEntity.ok(board);
-	}
-	
+		
+		String memberId = principal.getName();
+		if (memberId==null) {
+			System.out.println("로그인 필요합니다.");
+			return null;
+		}
+		if (teamId!=1) {
+			Member member = memberService.selectMember(memberId);
+			if (member.getTeamId()!=teamId) {
+				System.out.println("자신이 속한 게시판만 이용하실 수 있습니다.");
+				return null;
+			}
+			if (!board.getMemberId().equals(memberId)) {
+				System.out.println("게시글 작성자가 아니여서 수정을 하실 수 없습니다.");
+				return null;
+			}
+		}
+		boardService.updateBoard(board);
+		return board;
+	} 
 	
 	// 자유 게시판 조회 
     @GetMapping("/free")

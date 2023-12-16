@@ -67,7 +67,7 @@ public class ReplyController {
 			if (member.getTeamId()!=teamId) {
 				return "자신이 속한 게시판만 이용하실 수 있습니다.";
 			}
-			if (reply.getMemberId()!= memberId) {
+			if (!reply.getMemberId().equals(memberId)) {
 				return "작성자가 아니여서 댓글을 삭제하실 수 없습니다.";
 			}
 		}
@@ -98,7 +98,7 @@ public class ReplyController {
 				System.out.println("자신이 속한 게시판만 이용하실 수 있습니다.");
 				return null;
 			}
-			if (reply.getMemberId()!= memberId) {
+			if (!reply.getMemberId().equals(memberId)) {
 				System.out.println("댓글 작성자가 아니여서 수정을 하실 수 없습니다.");
 				return null;
 			}
