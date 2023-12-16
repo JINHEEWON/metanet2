@@ -126,7 +126,7 @@
 	</select>
 	
 	<select id="maxReplyId" resultType="int"> 
-		SELECT MAX(Reply_ID) FROM REPLY
+		SELECT NVL(MAX(Reply_ID),0) FROM REPLY
 	</select>
 	
 	<insert id="insertFileData" parameterType="com.team2.board.model.BoardUploadFile">
