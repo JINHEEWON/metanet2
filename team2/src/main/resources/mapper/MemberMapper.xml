@@ -14,7 +14,8 @@
          email AS email,
          phone AS phone,
          birth AS birth,
-         team_id AS teamId
+         team_id AS teamId,
+         role AS role
       FROM 
          member 
       WHERE member_id=#{memberId}
@@ -25,9 +26,9 @@
 		parameterType="com.team2.member.model.Member">
    <![CDATA[
       INSERT INTO 
-         member (member_id, name, password, email, phone, birth, team_id) 
+         member (member_id, name, password, email, phone, birth, team_id, role) 
       VALUES 
-         (#{memberId}, #{name}, #{password}, #{email}, #{phone}, #{birth}, #{teamId})
+         (#{memberId}, #{name}, #{password}, #{email}, #{phone}, #{birth}, #{teamId}, #{role})
    ]]>
 	</insert>
 
@@ -37,7 +38,7 @@
    <![CDATA[
       UPDATE MEMBER
       SET 
-         name=#{name}, password=#{password}, email=#{email}, phone=#{phone}, birth=#{birth}, team_id=#{teamId}
+         name=#{name}, password=#{password}, email=#{email}, phone=#{phone}, birth=#{birth}, team_id=#{teamId}, role=#{role}
       WHERE 
          member_id=#{memberId}
    ]]>
