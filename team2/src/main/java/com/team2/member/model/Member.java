@@ -16,4 +16,5 @@ public class Member {
     private String phone;
     private String birth;
     private int teamId;
+    private String role;
 }
