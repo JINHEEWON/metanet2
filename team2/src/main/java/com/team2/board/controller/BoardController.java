@@ -124,7 +124,7 @@ public class BoardController {
 	public String deleteBoard(@PathVariable int boardId, @PathVariable String teamId, Principal principal) {
 		Member member = memberService.selectMember(principal.getName());
 		if(!teamId.equals(Integer.toString(member.getTeamId()))) {
-			return null; 
+			return "fail"; 
 		}
 		try {
 			boardService.deleteBoard(boardId);
