@@ -107,6 +107,11 @@ public class BoardService implements IBoardService {
 	}
 	
 	@Override
+	public ReplyVO getReplyInfo(int replyId) {
+		return boardRepository.getReplyInfo(replyId);
+	}
+	
+	@Override
 	public void createBoardTeam(int teamId) {
 		boardRepository.createBoardTeam(teamId);
 	}

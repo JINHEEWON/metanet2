@@ -2,6 +2,9 @@ package com.team2.board.service;
 
 import com.team2.board.model.BoardUploadFile;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.team2.board.model.BoardVO;
 import com.team2.board.model.ReplyVO;
 
@@ -39,6 +42,7 @@ public interface IBoardService {
 	public int maxReplyId();
 	
 	public BoardVO getBoardInfo(int boardId);
+	public ReplyVO getReplyInfo(int replyId);
 	
 	public void createBoardTeam(int teamId);
 }

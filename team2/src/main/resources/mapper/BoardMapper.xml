@@ -163,6 +163,17 @@
 		Where BOARD_ID=#{boardId}
 	</select>
 	
+	<select id="getReplyInfo" parameterType="int" resultType="com.team2.board.model.ReplyVO">
+		SELECT 
+		  REPLY_ID as replyId,
+		  CONTENT as content, 
+		  WRITE_DATE as writeDate,
+		  BOARD_ID as boardId,
+		  MEMBER_ID as memberId
+		FROM REPLY
+		Where REPLY_ID=#{replyId}
+	</select>
+	
 	<insert id="createBoardTeam" parameterType="int">
 		INSERT INTO BOARD_TEAM
 		(TEAM_ID)

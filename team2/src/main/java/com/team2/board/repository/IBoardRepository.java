@@ -49,5 +49,5 @@ public interface IBoardRepository {
 	public int maxFileId();
 	
 	public BoardVO getBoardInfo(@Param("boardId") int boardId);
-
+	public ReplyVO getReplyInfo(@Param("replyId") int replyId);
 }
