@@ -1,5 +1,6 @@
 package com.team2.member.controller;
 
+import java.security.Principal;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -125,12 +126,27 @@ public class MemberController {
 
 	// 회원정보 수정
 	@PutMapping("/update")
-	public Member updateMemberInfo(@RequestBody Member member) {
+	public Member updateMemberInfo(@RequestBody Member member, 
+			Principal principal) {
+		//수정 요청 사용자와 현재 로그인한 사용자가 같은지 확인
+		if(!member.getMemberId().equals(principal.getName())) {
+			return null;
+		}
+		
+		//이메일 중복 검사
+		boolean emailAvailable = memberService.checkEmail(member.getEmail());
+		
+		// 중복된 경우에 대한 에러 응답
+		if (emailAvailable) {
+			return null;
+		}
+				
 		if (!member.getPassword().equals(member.getPassword2())) {
 			return null;
 		}
 		// password 암호화
-		PasswordEncoder pwEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		PasswordEncoder pwEncoder = 
+				PasswordEncoderFactories.createDelegatingPasswordEncoder();
 		String encodedPw = pwEncoder.encode(member.getPassword());
 		member.setPassword(encodedPw);
 
@@ -141,8 +157,13 @@ public class MemberController {
 
 	// 회원 탈퇴
 	@DeleteMapping("/delete")
-	public String deleteMemberInfo(@RequestBody MemberDelete memberDelete) {
-		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	public String deleteMemberInfo(@RequestBody MemberDelete memberDelete, Principal principal) {
+		//삭제 요청 사용자와 현재 로그인한 사용자가 같은지 확인
+		if(!memberDelete.getMemberId().equals(principal.getName())) {
+			return null;
+		}
+		PasswordEncoder passwordEncoder = 
+				PasswordEncoderFactories.createDelegatingPasswordEncoder();
 		String dbpw = memberService.getPassword(memberDelete.getMemberId());
 		if (memberDelete.getPassword() != null && passwordEncoder.matches(memberDelete.getPassword(), dbpw)) {
 			memberDelete.setPassword(dbpw);
