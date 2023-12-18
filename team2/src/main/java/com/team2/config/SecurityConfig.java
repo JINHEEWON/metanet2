@@ -28,6 +28,9 @@ public class SecurityConfig { // User와 Admin을 구분하는 용도임
 				.defaultSuccessUrl("/member/success"))
 				.logout((logout) -> logout.logoutUrl("/member/logout").logoutSuccessUrl("/member/login")
 						.invalidateHttpSession(true));
+		
+
+
 		http.authorizeHttpRequests()
 				.requestMatchers("/member/update").authenticated() // 이거로 들어오면 인증이 필요
 				.requestMatchers("/member/delete").authenticated() // 이거로 들어오면 인증이 필요
@@ -38,6 +41,10 @@ public class SecurityConfig { // User와 Admin을 구분하는 용도임
 				.anyRequest().permitAll(); // 나머지는 전부 인증 없이 접근 가능
 		return http.build();
 	}
+	
+	
+	
+	
 
 //	@Bean
 //	@ConditionalOnMissingBean(UserDetailsService.class)
