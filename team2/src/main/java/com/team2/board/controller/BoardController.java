@@ -45,6 +45,7 @@ public class BoardController {
 	@PostMapping(value="/create/{teamId}") 
 	public BoardVO createBoard(@RequestBody BoardVO board, @PathVariable String teamId, Principal principal) {
 		Member member = memberService.selectMember(principal.getName());
+		board.setTeamId(Integer.parseInt(teamId)); // 본인 teamId 아니면 게시글 작성 불가능
 		if(!teamId.equals(Integer.toString(member.getTeamId()))) {
 			return null; 
 		}
@@ -122,18 +123,30 @@ public class BoardController {
 	// 게시글 삭제 
 	@DeleteMapping("/delete/{teamId}/{boardId}")
 	public String deleteBoard(@PathVariable int boardId, @PathVariable String teamId, Principal principal) {
-		Member member = memberService.selectMember(principal.getName());
-		if(!teamId.equals(Integer.toString(member.getTeamId()))) {
-			return "fail"; 
-		}
-		try {
-			boardService.deleteBoard(boardId);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "fail";
-		}
-		return "success";
+	    try {
+	        Member member = memberService.selectMember(principal.getName());
+
+	        // 현재 로그인한 사용자의 소속 팀과 게시글이 속한 팀이 일치하는지 확인
+	        if (!teamId.equals(Integer.toString(member.getTeamId()))) {
+	            return "fail";  // 팀이 일치하지 않는 경우 실패 처리
+	        }
+
+	        // 게시글 정보 조회
+	        BoardVO post = boardService.getBoardInfo(boardId);
+
+	        // 현재 로그인한 사용자와 게시글 작성자가 같은지 확인
+	        if (post.getMemberId().equals(principal.getName())) {
+	            boardService.deleteBoard(boardId);
+	            return "success";  // 게시글 삭제 성공
+	        } else {
+	            return "fail";  // 권한 없는 사용자는 실패 처리
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return "fail";  // 예외 발생 시 실패 처리
+	    }
 	}
+	
 	
 	// 게시글 수정 
 	@PutMapping("/update/{teamId}")
