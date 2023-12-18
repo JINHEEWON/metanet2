@@ -64,13 +64,13 @@ public class MemberService implements IMemberService {
                 password.append(random.nextInt(10));
             }                
         }
-        
         //암호화
         PasswordEncoder pwEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 		String encodedPw = pwEncoder.encode(password);
-		
         //회원정보 업데이트
-        int result = memberDao.updatePassword(memberFindInfo.getMemberId(), encodedPw.toString(), memberFindInfo.getEmail(), memberFindInfo.getPhone());
+        int result = memberDao.updatePassword(memberFindInfo.getMemberId(),
+        		encodedPw.toString(), memberFindInfo.getEmail(), 
+        		memberFindInfo.getPhone());
         if(result == 1) {
         	return password.toString();
         } else {
