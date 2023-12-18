@@ -11,8 +11,10 @@ public class Member {
     private String memberId;
     private String name;
     private String password;
+    private String password2;
     private String email;
     private String phone;
     private String birth;
-    private int team;
+    private int teamId;
+    private String role;
 }
